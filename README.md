@@ -24,13 +24,13 @@ Application web développée avec Django permettant de créer, partager et analy
 ##  Diagrammes
 
 ###  Diagramme de cas d'utilisation
-![Use Case](diagramedecasdutilisation.png)
+![Use Case](diagrame de cas dutilisation.png)
 
 ###  Diagramme de séquence
-![Sequence](diagramedesequence.PNG)
+![Sequence](diagrame de sequence.PNG)
 
 ###  Diagramme de classes
-![Class](diagramedeclass.PNG)
+![Class](diagrame de class.PNG)
 
 ---
 
