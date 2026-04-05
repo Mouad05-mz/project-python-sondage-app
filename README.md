@@ -4,6 +4,7 @@
 
 - **Mouad Mezyan**
 - **Marouane Younsi**
+- **Marwane Elhatimi**
 
 Application web développée avec Django permettant de créer, partager et analyser des sondages.
 
