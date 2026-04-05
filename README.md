@@ -24,21 +24,25 @@ Application web développée avec Django permettant de créer, partager et analy
 ##  Diagrammes
 
 ###  Diagramme de cas d'utilisation
-![Use Case](<img width="573" height="847" alt="image" src="https://github.com/user-attachments/assets/3d3d559b-083a-4428-9aae-ca01cf2ac0f0" />
+![Use Case](<img width="373" height="201" alt="image" src="https://github.com/user-attachments/assets/c3a4da5f-79a4-4509-a447-34e57dd4537f" />
+
 )
 
 ###  Diagramme de séquence
-![Sequence](<img width="999" height="917" alt="ZLLDZZ_1" src="https://github.com/user-attachments/assets/95cf69cf-63b7-401c-987d-a66d58c3fb50" />
+![Sequence](<img width="373" height="201" alt="image" src="https://github.com/user-attachments/assets/6e2dfe81-6c89-4c76-8df0-eb1cd1d456c2" />
+
 )
 
 ###  Diagramme de classes
-![Class](<img width="875" height="734" alt="TPFFJK_1" src="https://github.com/user-attachments/assets/366bd4b5-209d-4f24-97f6-aad7568adb2a" />
+![Class](<img width="373" height="201" alt="image" src="https://github.com/user-attachments/assets/a2cb785f-169e-4680-abfa-4bd8cf96cce6" />
+
 )
 
 ---
 
 ##  Présentation
- [Télécharger la présentation]()
+ [Télécharger la présentation](<img width="373" height="201" alt="image" src="https://github.com/user-attachments/assets/3919e094-3b44-4378-90e2-2c91da99a259" />
+)
 
 ---
 
