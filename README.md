@@ -39,8 +39,10 @@ Application web développée avec Django permettant de créer, partager et analy
 
 ---
 
-##  Présentation
- [Télécharger la présentation](docspresentation.pdf.pdf)
+## 📂 Documentation
+
+-  [Cahier de charge](projet17.pdf)
+-  [Présentation](docspresentation.pdf.pdf)
 
 ---
 
