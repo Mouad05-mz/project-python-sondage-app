@@ -50,7 +50,7 @@ Application web développée avec Django permettant de créer, partager et analy
 ##  Installation
 
 ```bash
-git clone <repo>
-cd survey-app
+git clone https://github.com/Mouad05-mz/project-python-sondage-app.git
+cd project-python-sondage-app
 pip install -r requirements.txt
 python manage.py runserver
