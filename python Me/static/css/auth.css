@@ -1,0 +1,56 @@
+/*
+ * auth.css — Styles for Login & Registration pages
+ * SondagePro
+ */
+
+/* ── Auth form field overrides ────────────────────────── */
+input[type="text"].form-control,
+input[type="password"].form-control,
+input[type="email"].form-control {
+    background: var(--bg-card2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 10px;
+    padding: 0.65rem 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input[type="text"].form-control:focus,
+input[type="password"].form-control:focus,
+input[type="email"].form-control:focus {
+    background: var(--bg-card2);
+    color: var(--text);
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(99,102,241,0.2);
+    outline: none;
+}
+
+/* ── Auth card accent top border ──────────────────────── */
+.auth-card {
+    border-top: 3px solid var(--primary);
+}
+
+/* ── Auth icon container ──────────────────────────────── */
+.auth-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.75rem;
+    margin: 0 auto 1rem;
+}
+
+/* ── Auth page wrapper ────────────────────────────────── */
+.auth-wrapper {
+    margin-top: 3rem;
+}
+
+/* ── Divider ──────────────────────────────────────────── */
+.auth-footer-divider {
+    border-top: 1px solid var(--border);
+    margin: 1.25rem 0 0;
+    padding-top: 1.25rem;
+}

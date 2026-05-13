@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Inscription{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/auth.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center auth-wrapper">
+    <div class="col-sm-10 col-md-7 col-lg-5">
+
+        <div class="text-center mb-4">
+            <div class="auth-icon">
+                <i class="bi bi-person-plus-fill text-white"></i>
+            </div>
+            <h1 class="fw-800 text-white mb-1" style="font-size:1.75rem;">Créer un compte</h1>
+            <p class="text-muted small">Rejoignez SondagePro et commencez à créer vos sondages.</p>
+        </div>
+
+        <div class="card p-4 p-md-5 auth-card">
+            <form method="post" novalidate>
+                {% csrf_token %}
+
+                {% for field in form %}
+                <div class="mb-3">
+                    <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.help_text %}
+                        <div class="form-text text-muted" style="font-size:0.78rem;margin-top:0.3rem;">
+                            {{ field.help_text }}
+                        </div>
+                    {% endif %}
+                    {% for error in field.errors %}
+                        <div class="text-danger small mt-1">
+                            <i class="bi bi-exclamation-circle me-1"></i>{{ error }}
+                        </div>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+
+                <button type="submit" class="btn btn-primary w-100 py-2 mt-2" id="submitBtn">
+                    <i class="bi bi-rocket-takeoff me-2"></i>Créer mon compte
+                </button>
+            </form>
+
+            <div class="text-center auth-footer-divider">
+                <p class="text-muted small mb-0">
+                    Déjà un compte ?
+                    <a href="{% url 'login' %}" class="text-decoration-none fw-600" style="color:var(--primary-light);">
+                        Se connecter
+                    </a>
+                </p>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

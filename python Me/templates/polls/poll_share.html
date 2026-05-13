@@ -1,0 +1,232 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Partager — {{ poll.title }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .share-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 2rem;
+        margin-bottom: 1.25rem;
+    }
+    .share-card h5 {
+        font-weight: 700;
+        color: #fff;
+        font-size: 1rem;
+        margin-bottom: 1.25rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    .link-box {
+        display: flex;
+        align-items: center;
+        background: rgba(255,255,255,0.04);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        overflow: hidden;
+    }
+    .link-box input {
+        flex: 1;
+        background: transparent;
+        border: none;
+        color: var(--text);
+        padding: 0.75rem 1rem;
+        font-family: 'Inter', monospace;
+        font-size: 0.875rem;
+        outline: none;
+    }
+    .link-box .copy-btn {
+        background: var(--primary);
+        border: none;
+        color: #fff;
+        padding: 0.75rem 1.25rem;
+        font-weight: 600;
+        font-size: 0.85rem;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: opacity 0.2s;
+    }
+    .link-box .copy-btn:hover { opacity: 0.9; }
+    .embed-code {
+        background: rgba(15,23,42,0.8);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 1rem;
+        font-family: monospace;
+        font-size: 0.82rem;
+        color: #67e8f9;
+        white-space: pre-wrap;
+        word-break: break-all;
+    }
+    .poll-meta-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        background: rgba(255,255,255,0.05);
+        border: 1px solid var(--border);
+        border-radius: 50px;
+        padding: 0.3rem 0.8rem;
+        font-size: 0.78rem;
+        color: var(--text-muted);
+        font-weight: 500;
+        margin: 0.2rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="mb-4">
+    <a href="{% url 'dashboard' %}" class="text-muted text-decoration-none small">
+        <i class="bi bi-arrow-left me-1"></i>Retour au tableau de bord
+    </a>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-8">
+
+        <!-- Poll Info -->
+        <div class="share-card" style="background:linear-gradient(135deg,rgba(99,102,241,0.12),rgba(6,182,212,0.06));border-color:rgba(99,102,241,0.2);">
+            <div class="d-flex align-items-center gap-3 mb-3">
+                <div style="width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,var(--primary),var(--accent));display:flex;align-items:center;justify-content:center;font-size:1.4rem;color:#fff;flex-shrink:0;">
+                    <i class="bi bi-share-fill"></i>
+                </div>
+                <div>
+                    <h4 class="text-white fw-700 mb-1" style="font-weight:700;">{{ poll.title }}</h4>
+                    <p class="text-muted mb-0 small">{{ poll.description|default:"Partagez ce sondage pour collecter des réponses." }}</p>
+                </div>
+            </div>
+            <div>
+                <span class="poll-meta-pill"><i class="bi bi-question-circle"></i>{{ poll.questions.count }} question{{ poll.questions.count|pluralize }}</span>
+                <span class="poll-meta-pill"><i class="bi bi-chat-text"></i>{{ poll.responses.count }} réponse{{ poll.responses.count|pluralize }}</span>
+                {% if poll.is_anonymous %}<span class="poll-meta-pill"><i class="bi bi-eye-slash"></i>Anonyme</span>{% endif %}
+                {% if poll.password %}<span class="poll-meta-pill"><i class="bi bi-lock"></i>Protégé par MDP</span>{% endif %}
+                {% if poll.expires_at %}<span class="poll-meta-pill"><i class="bi bi-clock"></i>Expire le {{ poll.expires_at|date:"d/m/Y" }}</span>{% endif %}
+            </div>
+        </div>
+
+        <!-- Direct Link -->
+        <div class="share-card">
+            <h5><i class="bi bi-link-45deg text-primary"></i>Lien direct</h5>
+            <p class="text-muted small mb-3">Copiez ce lien et partagez-le par email, messagerie ou réseaux sociaux.</p>
+            <div class="link-box">
+                <input type="text" id="shareLinkInput" value="{{ share_link }}" readonly>
+                <button class="copy-btn" onclick="copyLink()">
+                    <i class="bi bi-clipboard me-1"></i>Copier
+                </button>
+            </div>
+            <div id="copyConfirm" class="text-success small mt-2 d-none">
+                <i class="bi bi-check-circle-fill me-1"></i>Lien copié !
+            </div>
+        </div>
+
+        <!-- Embed Code -->
+        <div class="share-card">
+            <h5><i class="bi bi-code-slash text-accent"></i>Intégrer sur un site web</h5>
+            <p class="text-muted small mb-3">
+                Copiez ce code HTML et collez-le dans votre site pour intégrer le sondage directement.
+            </p>
+            <div class="embed-code" id="embedCode">{{ embed_code }}</div>
+            <button class="btn btn-outline-light btn-sm mt-3" onclick="copyEmbed()">
+                <i class="bi bi-clipboard me-1"></i>Copier le code d'intégration
+            </button>
+            <div id="embedConfirm" class="text-success small mt-2 d-none">
+                <i class="bi bi-check-circle-fill me-1"></i>Code copié !
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-lg-4">
+
+        <!-- Quick Stats -->
+        <div class="share-card mb-4">
+            <h5><i class="bi bi-graph-up text-success"></i>Statistiques rapides</h5>
+            <div class="d-flex flex-column gap-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="text-muted small">Réponses collectées</span>
+                    <span class="fw-700 text-white" style="font-weight:700;">{{ poll.responses.count }}</span>
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="text-muted small">Statut</span>
+                    {% if poll.is_active %}
+                        <span class="badge" style="background:rgba(16,185,129,0.15);color:var(--success);">Actif</span>
+                    {% else %}
+                        <span class="badge" style="background:rgba(239,68,68,0.15);color:#fca5a5;">Inactif</span>
+                    {% endif %}
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="text-muted small">Créé le</span>
+                    <span class="text-muted small">{{ poll.created_at|date:"d M Y" }}</span>
+                </div>
+                {% if poll.expires_at %}
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="text-muted small">Expire le</span>
+                    <span class="text-muted small">{{ poll.expires_at|date:"d M Y" }}</span>
+                </div>
+                {% endif %}
+            </div>
+
+            <hr style="border-color:var(--border);margin:1.25rem 0;">
+
+            <div class="d-flex flex-column gap-2">
+                <a href="{% url 'poll_results' poll.id %}" class="btn btn-outline-light btn-sm w-100">
+                    <i class="bi bi-bar-chart me-2"></i>Voir les résultats
+                </a>
+                <a href="{% url 'export_responses' poll.id %}" class="btn btn-outline-light btn-sm w-100">
+                    <i class="bi bi-download me-2"></i>Exporter CSV
+                </a>
+                <a href="{% url 'take_poll' poll.id %}" class="btn btn-primary btn-sm w-100" target="_blank">
+                    <i class="bi bi-eye me-2"></i>Prévisualiser le sondage
+                </a>
+            </div>
+        </div>
+
+        <!-- Tips -->
+        <div class="share-card" style="background:rgba(6,182,212,0.06);border-color:rgba(6,182,212,0.2);">
+            <h5><i class="bi bi-lightbulb-fill text-warning"></i>Conseils de partage</h5>
+            <ul class="list-unstyled mb-0">
+                <li class="text-muted small mb-2">
+                    <i class="bi bi-check-circle text-success me-2"></i>
+                    Partagez via email pour un taux de réponse plus élevé.
+                </li>
+                <li class="text-muted small mb-2">
+                    <i class="bi bi-check-circle text-success me-2"></i>
+                    Utilisez l'intégration iframe pour votre site web.
+                </li>
+                <li class="text-muted small mb-0">
+                    <i class="bi bi-check-circle text-success me-2"></i>
+                    Activez la protection par mot de passe pour restreindre l'accès.
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function copyLink() {
+    const input = document.getElementById('shareLinkInput');
+    navigator.clipboard.writeText(input.value).then(() => {
+        const confirm = document.getElementById('copyConfirm');
+        confirm.classList.remove('d-none');
+        setTimeout(() => confirm.classList.add('d-none'), 3000);
+    });
+}
+
+function copyEmbed() {
+    const code = document.getElementById('embedCode').textContent;
+    navigator.clipboard.writeText(code).then(() => {
+        const confirm = document.getElementById('embedConfirm');
+        confirm.classList.remove('d-none');
+        setTimeout(() => confirm.classList.add('d-none'), 3000);
+    });
+}
+</script>
+{% endblock %}

@@ -1,0 +1,138 @@
+/*
+ * poll_results.css — Styles for the Results & Statistics page
+ * SondagePro
+ */
+
+/* ── Results Header ───────────────────────────────────── */
+.results-header {
+    background: linear-gradient(135deg, rgba(99,102,241,0.15), rgba(6,182,212,0.08));
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.results-header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+}
+
+/* ── Individual Result Cards ──────────────────────────── */
+.result-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.75rem;
+    margin-bottom: 1.25rem;
+    transition: border-color 0.2s;
+}
+
+.result-card:hover { border-color: rgba(99,102,241,0.25); }
+
+.result-card h6 {
+    font-weight: 700;
+    font-size: 1rem;
+    color: #fff;
+    margin-bottom: 1.25rem;
+}
+
+/* ── Question Type Badge ──────────────────────────────── */
+.q-type-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    border-radius: 6px;
+    padding: 0.2em 0.6em;
+    margin-bottom: 0.75rem;
+}
+
+/* ── Progress Bar Rows (Choice / Scale) ───────────────── */
+.choice-bar-row { margin-bottom: 0.75rem; }
+
+.choice-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.35rem;
+    font-size: 0.875rem;
+}
+
+.choice-label .name { color: var(--text); font-weight: 500; }
+.choice-label .pct  { color: var(--primary-light); font-weight: 700; font-size: 0.8rem; }
+
+.bar-track {
+    width: 100%;
+    height: 10px;
+    background: rgba(255,255,255,0.07);
+    border-radius: 50px;
+    overflow: hidden;
+}
+
+.bar-fill {
+    height: 100%;
+    border-radius: 50px;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    transition: width 0.6s cubic-bezier(0.4,0,0.2,1);
+}
+
+.bar-fill.scale-bar {
+    background: linear-gradient(90deg, var(--success), #34d399);
+}
+
+/* ── Scale Average Pill ───────────────────────────────── */
+.scale-avg {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(99,102,241,0.12);
+    border: 1px solid rgba(99,102,241,0.2);
+    border-radius: 50px;
+    padding: 0.4rem 1rem;
+    font-weight: 700;
+    color: var(--primary-light);
+    font-size: 1rem;
+    margin-bottom: 1.25rem;
+}
+
+/* ── Text Answers ─────────────────────────────────────── */
+.text-answer {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.65rem 1rem;
+    font-size: 0.875rem;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+    border-left: 3px solid var(--primary);
+}
+
+/* ── Summary Stat Pills ───────────────────────────────── */
+.stat-pill {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+}
+
+.stat-pill-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+}
+
+.stat-pill-val   { font-size: 1.5rem; font-weight: 800; color: #fff; line-height: 1; }
+.stat-pill-label { font-size: 0.78rem; color: var(--text-muted); font-weight: 500; }

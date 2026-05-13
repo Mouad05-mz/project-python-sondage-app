@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Tableau de Bord{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<!-- Page Header -->
+<div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-3">
+    <div>
+        <h1 class="fs-3 mb-1" style="font-weight:800;color:#fff;">
+            Bonjour, {{ user.username }} 👋
+        </h1>
+        <p class="text-muted mb-0 small">Gérez vos sondages et suivez vos statistiques.</p>
+    </div>
+    <a href="{% url 'create_poll' %}" class="btn btn-primary px-4">
+        <i class="bi bi-plus-lg me-2"></i>Nouveau sondage
+    </a>
+</div>
+
+<!-- Summary Cards -->
+<div class="row g-3 mb-4">
+    <div class="col-sm-4">
+        <div class="summary-card">
+            <div class="summary-icon" style="background:rgba(99,102,241,0.15);">
+                <i class="bi bi-clipboard2-data" style="color:var(--primary-light);"></i>
+            </div>
+            <div>
+                <div class="summary-label">Total sondages</div>
+                <div class="summary-value">{{ total_polls }}</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="summary-card">
+            <div class="summary-icon" style="background:rgba(16,185,129,0.15);">
+                <i class="bi bi-check-circle-fill" style="color:var(--success);"></i>
+            </div>
+            <div>
+                <div class="summary-label">Actifs</div>
+                <div class="summary-value">{{ active_polls }}</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="summary-card">
+            <div class="summary-icon" style="background:rgba(6,182,212,0.15);">
+                <i class="bi bi-chat-square-text-fill" style="color:var(--accent);"></i>
+            </div>
+            <div>
+                <div class="summary-label">Réponses totales</div>
+                <div class="summary-value">{{ total_responses }}</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Polls Table -->
+<div class="table-card">
+    <div class="card-header">
+        <h5><i class="bi bi-table me-2 text-primary"></i>Mes sondages</h5>
+        <span class="badge" style="background:rgba(99,102,241,0.15);color:var(--primary-light);">
+            {{ total_polls }} sondage{{ total_polls|pluralize }}
+        </span>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover mb-0">
+            <thead>
+                <tr>
+                    <th>Titre</th>
+                    <th>Date de création</th>
+                    <th>Réponses</th>
+                    <th>Questions</th>
+                    <th>Statut</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for poll in polls %}
+                <tr class="poll-row">
+                    <td>
+                        <div class="fw-600 text-white" style="font-weight:600;">{{ poll.title }}</div>
+                        <div class="text-muted small">
+                            {% if poll.is_anonymous %}<i class="bi bi-eye-slash me-1"></i>Anonyme{% endif %}
+                            {% if poll.password %}<i class="bi bi-lock ms-2 me-1"></i>Protégé{% endif %}
+                            {% if poll.expires_at %}<i class="bi bi-clock ms-2 me-1"></i>Expire le {{ poll.expires_at|date:"d/m/Y" }}{% endif %}
+                            {% if poll.is_template %}<i class="bi bi-layers ms-2 me-1"></i>Modèle{% endif %}
+                        </div>
+                    </td>
+                    <td class="text-muted small">
+                        <i class="bi bi-calendar3 me-1"></i>{{ poll.created_at|date:"d M Y" }}
+                    </td>
+                    <td><span style="font-weight:600;color:#fff;">{{ poll.responses.count }}</span></td>
+                    <td><span class="text-muted small">{{ poll.questions.count }}</span></td>
+                    <td>
+                        {% if poll.is_expired %}
+                            <span class="badge badge-expired"><i class="bi bi-clock-fill me-1"></i>Expiré</span>
+                        {% elif poll.is_active %}
+                            <span class="badge badge-active"><i class="bi bi-circle-fill me-1" style="font-size:0.5rem;vertical-align:middle;"></i>Actif</span>
+                        {% else %}
+                            <span class="badge badge-inactive"><i class="bi bi-pause-fill me-1"></i>Inactif</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <div class="d-flex gap-1 justify-content-end flex-wrap">
+                            <a href="{% url 'poll_results' poll.id %}" class="action-btn" title="Résultats"><i class="bi bi-bar-chart"></i></a>
+                            <a href="{% url 'poll_share' poll.id %}" class="action-btn" title="Partager"><i class="bi bi-share"></i></a>
+                            <a href="{% url 'export_responses' poll.id %}" class="action-btn" title="Exporter CSV"><i class="bi bi-download"></i></a>
+                            <form action="{% url 'toggle_poll_active' poll.id %}" method="post" class="d-inline">
+                                {% csrf_token %}
+                                <button type="submit" class="action-btn" title="{% if poll.is_active %}Désactiver{% else %}Activer{% endif %}">
+                                    {% if poll.is_active %}<i class="bi bi-pause-fill"></i>{% else %}<i class="bi bi-play-fill"></i>{% endif %}
+                                </button>
+                            </form>
+                            <a href="{% url 'take_poll' poll.id %}" class="action-btn" title="Prévisualiser" target="_blank"><i class="bi bi-eye"></i></a>
+                            <button class="action-btn danger" title="Supprimer"
+                                    data-bs-toggle="modal" data-bs-target="#deleteModal{{ poll.id }}">
+                                <i class="bi bi-trash3"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+
+                <!-- Delete Modal -->
+                <div class="modal fade" id="deleteModal{{ poll.id }}" tabindex="-1">
+                    <div class="modal-dialog modal-sm modal-dialog-centered">
+                        <div class="modal-content" style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);">
+                            <div class="modal-body p-4 text-center">
+                                <i class="bi bi-exclamation-triangle-fill text-danger display-5 d-block mb-3"></i>
+                                <h6 class="text-white mb-2" style="font-weight:700;">Supprimer ce sondage ?</h6>
+                                <p class="text-muted small mb-4">
+                                    « {{ poll.title }} » et toutes ses réponses seront définitivement supprimés.
+                                </p>
+                                <div class="d-flex gap-2 justify-content-center">
+                                    <button class="btn btn-outline-light btn-sm" data-bs-dismiss="modal">Annuler</button>
+                                    <form action="{% url 'delete_poll' poll.id %}" method="post" class="d-inline">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {% empty %}
+                <tr>
+                    <td colspan="6">
+                        <div class="empty-state">
+                            <div class="icon"><i class="bi bi-clipboard2-x"></i></div>
+                            <h5>Vous n'avez pas encore créé de sondage.</h5>
+                            <a href="{% url 'create_poll' %}" class="btn btn-primary mt-3">
+                                <i class="bi bi-plus-lg me-2"></i>Créer mon premier sondage
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Toast -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="shareToast" class="toast align-items-center border-0" role="alert"
+         style="background:rgba(16,185,129,0.9);backdrop-filter:blur(10px);">
+        <div class="d-flex">
+            <div class="toast-body text-white" style="font-weight:600;">
+                <i class="bi bi-check-circle-fill me-2"></i>Lien copié dans le presse-papiers !
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/dashboard.js' %}"></script>
+{% endblock %}

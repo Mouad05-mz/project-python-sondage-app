@@ -1,0 +1,203 @@
+/*
+ * create_poll.css — Styles for the Poll Creation page
+ * SondagePro
+ */
+
+/* ── Page Header ──────────────────────────────────────── */
+.creator-header {
+    background: linear-gradient(135deg, rgba(99,102,241,0.12), rgba(6,182,212,0.06));
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem 2rem;
+    margin-bottom: 1.5rem;
+    border-top: 3px solid var(--primary);
+}
+
+/* ── Section Blocks ───────────────────────────────────── */
+.section-block {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.75rem;
+    margin-bottom: 1.25rem;
+}
+
+.section-block h5 {
+    font-weight: 700;
+    color: #fff;
+    font-size: 0.95rem;
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* ── Question Cards ───────────────────────────────────── */
+.q-card {
+    background: var(--bg-card2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 0.75rem;
+    transition: border-color 0.2s;
+}
+
+.q-card:hover { border-color: rgba(99,102,241,0.25); }
+
+.q-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.85rem;
+}
+
+/* ── Question Type Tags ───────────────────────────────── */
+.q-type-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    border-radius: 6px;
+    padding: 0.25em 0.7em;
+    font-size: 0.72rem;
+    font-weight: 600;
+}
+
+.q-type-tag.text-type     { background: rgba(245,158,11,0.12); color: var(--warning);       border: 1px solid rgba(245,158,11,0.2); }
+.q-type-tag.single-type   { background: rgba(99,102,241,0.12); color: var(--primary-light); border: 1px solid rgba(99,102,241,0.2); }
+.q-type-tag.multiple-type { background: rgba(6,182,212,0.12);  color: var(--accent);        border: 1px solid rgba(6,182,212,0.2);  }
+.q-type-tag.scale-type    { background: rgba(16,185,129,0.12); color: var(--success);       border: 1px solid rgba(16,185,129,0.2); }
+
+/* ── Remove Button ────────────────────────────────────── */
+.remove-q-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: 7px;
+    border: 1px solid rgba(239,68,68,0.2);
+    background: rgba(239,68,68,0.08);
+    color: #fca5a5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: background 0.15s;
+}
+
+.remove-q-btn:hover { background: rgba(239,68,68,0.2); }
+
+/* ── Add Question Type Buttons ────────────────────────── */
+.add-type-btn {
+    background: var(--bg-card2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text-muted);
+    padding: 0.6rem 1rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: all 0.15s;
+}
+
+.add-type-btn:hover {
+    border-color: rgba(99,102,241,0.3);
+    color: var(--primary-light);
+    background: rgba(99,102,241,0.07);
+}
+
+/* ── Choice Items ─────────────────────────────────────── */
+.choice-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.choice-item input {
+    flex: 1;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    padding: 0.45rem 0.75rem;
+    font-size: 0.875rem;
+}
+
+.choice-item input:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+.remove-choice-btn {
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    border: 1px solid rgba(239,68,68,0.2);
+    background: rgba(239,68,68,0.08);
+    color: #fca5a5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    font-size: 0.78rem;
+}
+
+.remove-choice-btn:hover { background: rgba(239,68,68,0.2); }
+
+.add-choice-link {
+    color: var(--accent);
+    background: none;
+    border: none;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0;
+    margin-top: 0.25rem;
+}
+
+.add-choice-link:hover { color: #fff; }
+
+/* ── Save Button ──────────────────────────────────────── */
+.save-btn {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    border: none;
+    color: #fff;
+    font-weight: 700;
+    font-size: 1rem;
+    padding: 0.85rem 3rem;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s;
+}
+
+.save-btn:hover:not(:disabled) {
+    opacity: 0.9;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(99,102,241,0.4);
+}
+
+.save-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* ── Conditional Logic Selects ────────────────────────── */
+.logic-select {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    padding: 0.45rem 0.75rem;
+    font-size: 0.82rem;
+}
+
+.logic-select:focus { outline: none; border-color: var(--primary); }
+
+/* ── Empty Questions State ────────────────────────────── */
+.empty-questions {
+    border: 2px dashed var(--border);
+    border-radius: var(--radius);
+    padding: 3rem;
+    text-align: center;
+    color: var(--text-muted);
+}

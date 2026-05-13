@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}{{ poll.title }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/take_poll.css' %}">
+{% if poll.custom_css %}
+<style>
+    {{ poll.custom_css|safe }}
+</style>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+
+        <!-- Poll Header -->
+        <div class="poll-hero">
+            <h1>{{ poll.title }}</h1>
+            {% if poll.description %}
+                <p class="text-muted mb-0" style="font-size:0.95rem;">{{ poll.description }}</p>
+            {% endif %}
+            <div class="d-flex gap-3 mt-3 flex-wrap">
+                <span class="text-muted small"><i class="bi bi-question-circle me-1"></i>{{ poll.questions.count }} question{{ poll.questions.count|pluralize }}</span>
+                {% if poll.is_anonymous %}<span class="text-muted small"><i class="bi bi-eye-slash me-1"></i>Réponses anonymes</span>{% endif %}
+                {% if poll.expires_at %}<span class="text-muted small"><i class="bi bi-clock me-1"></i>Expire le {{ poll.expires_at|date:"d/m/Y" }}</span>{% endif %}
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-bar-container">
+            <div class="progress-fill" id="progressFill" style="width:0%;"></div>
+        </div>
+
+        <!-- Poll Form -->
+        <form method="post" id="pollForm" novalidate>
+            {% csrf_token %}
+            <div id="questionsContainer">
+                {% for q in poll.questions.all %}
+                <div class="question-card"
+                     id="question-wrap-{{ q.id }}"
+                     data-q-id="{{ q.id }}"
+                     data-depends-on-q="{{ q.depends_on_question_id|default:'' }}"
+                     data-depends-on-choice="{{ q.depends_on_choice_id|default:'' }}">
+
+                    <div class="question-title">
+                        <span class="question-num">{{ forloop.counter }}</span>
+                        {{ q.text }}
+                        {% if q.is_required %}
+                            <span class="text-danger ms-1" title="Obligatoire">*</span>
+                        {% endif %}
+                    </div>
+
+                    {% if q.question_type == 'text' %}
+                        <!-- TEXT FREE -->
+                        <textarea name="question_{{ q.id }}" class="form-control" rows="4" placeholder="Votre réponse..." {{ q.is_required|yesno:"required," }}></textarea>
+
+                    {% elif q.question_type == 'scale' %}
+                        <!-- SCALE 1-5 -->
+                        <div class="scale-container" role="radiogroup" aria-label="{{ q.text }}">
+                            {% for i in "12345" %}
+                            <div class="scale-option">
+                                <input type="radio"
+                                       name="question_{{ q.id }}"
+                                       id="scale_{{ q.id }}_{{ forloop.counter }}"
+                                       value="{{ forloop.counter }}"
+                                       data-choice-id="scale_{{ q.id }}_{{ forloop.counter }}"
+                                       onchange="evaluateLogic()"
+                                       {{ q.is_required|yesno:"required," }}>
+                                <label for="scale_{{ q.id }}_{{ forloop.counter }}">
+                                    {{ forloop.counter }}
+                                </label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <div class="scale-labels">
+                            <span>Pas du tout d'accord</span>
+                            <span>Tout à fait d'accord</span>
+                        </div>
+
+                    {% elif q.question_type == 'choice_single' %}
+                        <!-- SINGLE CHOICE -->
+                        <div class="d-flex flex-column">
+                            {% for choice in q.choices.all %}
+                            <div class="choice-option">
+                                <input type="radio"
+                                       name="question_{{ q.id }}"
+                                       id="choice_{{ choice.id }}"
+                                       value="{{ choice.id }}"
+                                       data-choice-id="{{ choice.id }}"
+                                       onchange="evaluateLogic()"
+                                       {{ q.is_required|yesno:"required," }}>
+                                <label for="choice_{{ choice.id }}">{{ choice.text }}</label>
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                    {% elif q.question_type == 'choice_multiple' %}
+                        <!-- MULTIPLE CHOICE -->
+                        <div class="d-flex flex-column">
+                            {% for choice in q.choices.all %}
+                            <div class="choice-option multiple">
+                                <input type="checkbox"
+                                       name="question_{{ q.id }}"
+                                       id="choice_{{ choice.id }}"
+                                       value="{{ choice.id }}"
+                                       data-choice-id="{{ choice.id }}"
+                                       onchange="evaluateLogic()">
+                                <label for="choice_{{ choice.id }}">{{ choice.text }}</label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="text-center mt-4 mb-5">
+                <button type="submit" class="btn btn-primary btn-lg px-5 py-2">
+                    <i class="bi bi-send-fill me-2"></i>Soumettre mes réponses
+                </button>
+                <p class="text-muted small mt-3 mb-0">
+                    <i class="bi bi-shield-check me-1"></i>
+                    {% if poll.is_anonymous %}Vos réponses sont anonymes.{% else %}Vos réponses sont enregistrées sous votre nom.{% endif %}
+                </p>
+            </div>
+        </form>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/take_poll.js' %}"></script>
+{% endblock %}

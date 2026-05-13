@@ -1,0 +1,209 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Résultats — {{ poll.title }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/poll_results.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<!-- Page Header -->
+<div class="results-header">
+    <div class="d-flex align-items-start justify-content-between flex-wrap gap-3">
+        <div>
+            <div class="text-muted small mb-2">
+                <a href="{% url 'dashboard' %}" class="text-muted text-decoration-none">
+                    <i class="bi bi-arrow-left me-1"></i>Tableau de bord
+                </a>
+            </div>
+            <h1 class="fs-4 fw-800 text-white mb-1" style="font-weight:800;">
+                <i class="bi bi-bar-chart-line-fill me-2 text-primary"></i>{{ poll.title }}
+            </h1>
+            <p class="text-muted mb-0 small">{{ poll.description|default:"Analyse des réponses collectées." }}</p>
+        </div>
+        <div class="d-flex gap-2 flex-wrap">
+            <a href="{% url 'export_responses' poll.id %}" class="btn btn-outline-light btn-sm">
+                <i class="bi bi-download me-1"></i>Exporter CSV
+            </a>
+            <a href="{% url 'poll_share' poll.id %}" class="btn btn-outline-light btn-sm">
+                <i class="bi bi-share me-1"></i>Partager
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Summary Stats -->
+<div class="row g-3 mb-4">
+    <div class="col-sm-4">
+        <div class="stat-pill">
+            <div class="stat-pill-icon" style="background:rgba(99,102,241,0.15);">
+                <i class="bi bi-chat-square-dots-fill" style="color:var(--primary-light);"></i>
+            </div>
+            <div>
+                <div class="stat-pill-val">{{ responses_count }}</div>
+                <div class="stat-pill-label">Réponse{{ responses_count|pluralize }} totale{{ responses_count|pluralize }}</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="stat-pill">
+            <div class="stat-pill-icon" style="background:rgba(16,185,129,0.15);">
+                <i class="bi bi-question-circle-fill" style="color:var(--success);"></i>
+            </div>
+            <div>
+                <div class="stat-pill-val">{{ poll.questions.count }}</div>
+                <div class="stat-pill-label">Question{{ poll.questions.count|pluralize }}</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="stat-pill">
+            <div class="stat-pill-icon" style="background:rgba(6,182,212,0.15);">
+                <i class="bi bi-calendar3" style="color:var(--accent);"></i>
+            </div>
+            <div>
+                <div class="stat-pill-val">{{ poll.created_at|date:"d/m/Y" }}</div>
+                <div class="stat-pill-label">Date de création</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- No responses yet -->
+{% if responses_count == 0 %}
+<div class="card text-center py-5">
+    <div class="card-body">
+        <i class="bi bi-inbox display-4 text-muted d-block mb-3"></i>
+        <h5 class="text-muted">Aucune réponse collectée pour l'instant.</h5>
+        <p class="text-muted small">Partagez votre sondage pour commencer à collecter des données.</p>
+        <a href="{% url 'poll_share' poll.id %}" class="btn btn-primary mt-2">
+            <i class="bi bi-share me-2"></i>Partager le sondage
+        </a>
+    </div>
+</div>
+
+{% else %}
+
+<!-- Chart.js canvases — one per choice/scale question -->
+{% for stat in results_data %}
+<div class="result-card">
+    <!-- Question type badge -->
+    {% if stat.type == 'choice_single' %}
+        <span class="q-type-badge" style="background:rgba(99,102,241,0.12);color:var(--primary-light);">
+            <i class="bi bi-ui-radios"></i> Choix unique
+        </span>
+    {% elif stat.type == 'choice_multiple' %}
+        <span class="q-type-badge" style="background:rgba(6,182,212,0.12);color:var(--accent);">
+            <i class="bi bi-ui-checks"></i> Choix multiple
+        </span>
+    {% elif stat.type == 'scale' %}
+        <span class="q-type-badge" style="background:rgba(16,185,129,0.12);color:var(--success);">
+            <i class="bi bi-sliders"></i> Échelle
+        </span>
+    {% elif stat.type == 'text' %}
+        <span class="q-type-badge" style="background:rgba(245,158,11,0.12);color:var(--warning);">
+            <i class="bi bi-textarea-t"></i> Texte libre
+        </span>
+    {% endif %}
+
+    <h6>{{ forloop.counter }}. {{ stat.question.text }}</h6>
+
+    <!-- CHOICE QUESTIONS → bar chart -->
+    {% if stat.type == 'choice_single' or stat.type == 'choice_multiple' %}
+    <div class="row g-4">
+        <div class="col-lg-6">
+            {% for c in stat.choices %}
+            <div class="choice-bar-row">
+                <div class="choice-label">
+                    <span class="name">{{ c.text }}</span>
+                    <span class="pct">{{ c.count }} ({{ c.percentage }}%)</span>
+                </div>
+                <div class="bar-track">
+                    <div class="bar-fill" style="width: {{ c.percentage }}%;"></div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="col-lg-6">
+            <canvas id="chart_{{ forloop.counter }}" height="160"></canvas>
+        </div>
+    </div>
+
+    <!-- SCALE QUESTION → horizontal bar + avg -->
+    {% elif stat.type == 'scale' %}
+    <div class="mb-3">
+        <span class="scale-avg">
+            <i class="bi bi-star-fill" style="color:var(--warning);"></i>
+            Moyenne : {{ stat.scale_avg }} / 5
+        </span>
+    </div>
+    <div class="row g-4">
+        <div class="col-lg-6">
+            {% for s in stat.scale %}
+            <div class="choice-bar-row">
+                <div class="choice-label">
+                    <span class="name">
+                        {% for _ in "12345"|make_list %}{% if forloop.counter <= s.value %}⭐{% endif %}{% endfor %}
+                        {{ s.value }} / 5
+                    </span>
+                    <span class="pct">{{ s.count }} ({{ s.percentage }}%)</span>
+                </div>
+                <div class="bar-track">
+                    <div class="bar-fill scale-bar" style="width: {{ s.percentage }}%;"></div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="col-lg-6">
+            <canvas id="chart_{{ forloop.counter }}" height="160"></canvas>
+        </div>
+    </div>
+
+    <!-- TEXT ANSWERS -->
+    {% elif stat.type == 'text' %}
+    {% if stat.texts %}
+        <p class="text-muted small mb-3">{{ stat.texts|length }} réponse{{ stat.texts|length|pluralize }} :</p>
+        {% for answer in stat.texts %}
+        <div class="text-answer">{{ answer }}</div>
+        {% endfor %}
+    {% else %}
+        <p class="text-muted small">Aucune réponse textuelle encore.</p>
+    {% endif %}
+    {% endif %}
+
+</div>
+{% endfor %}
+{% endif %}
+
+{% endblock %}
+
+{% block extra_js %}
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+
+<!-- Build data array for the JS file -->
+<script>
+    window.CHARTS_DATA = [
+        {% for stat in results_data %}
+        {% if stat.type == 'choice_single' or stat.type == 'choice_multiple' %}
+        {
+            id: 'chart_{{ forloop.counter }}',
+            type: 'doughnut',
+            labels: [{% for c in stat.choices %}"{{ c.text|escapejs }}"{% if not forloop.last %},{% endif %}{% endfor %}],
+            data:   [{% for c in stat.choices %}{{ c.count }}{% if not forloop.last %},{% endif %}{% endfor %}],
+        },
+        {% elif stat.type == 'scale' %}
+        {
+            id: 'chart_{{ forloop.counter }}',
+            type: 'bar',
+            labels: ['1 ⭐','2 ⭐','3 ⭐','4 ⭐','5 ⭐'],
+            data:   [{% for s in stat.scale %}{{ s.count }}{% if not forloop.last %},{% endif %}{% endfor %}],
+        },
+        {% endif %}
+        {% endfor %}
+    ];
+</script>
+
+<script src="{% static 'js/poll_results.js' %}"></script>
+{% endblock %}

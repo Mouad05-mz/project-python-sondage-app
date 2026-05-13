@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Créer un sondage{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/create_poll.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<!-- Header -->
+<div class="creator-header">
+    <div class="d-flex align-items-center gap-3">
+        <div style="width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,var(--primary),var(--accent));display:flex;align-items:center;justify-content:center;font-size:1.3rem;color:#fff;flex-shrink:0;">
+            <i class="bi bi-pencil-square"></i>
+        </div>
+        <div>
+            <h1 class="fs-4 fw-800 mb-0 text-white" style="font-weight:800;">Créer un nouveau sondage</h1>
+            <p class="text-muted small mb-0">Remplissez les informations ci-dessous et ajoutez vos questions.</p>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <!-- LEFT: Form -->
+    <div class="col-lg-8">
+
+        <!-- General Info -->
+        <div class="section-block">
+            <h5><i class="bi bi-info-circle" style="color:var(--primary-light);"></i>Informations générales</h5>
+            <div class="mb-3">
+                <label for="pollTitle" class="form-label">Titre du sondage <span class="text-danger">*</span></label>
+                <input type="text" id="pollTitle" class="form-control" placeholder="Ex: Sondage de satisfaction client" required>
+            </div>
+            <div class="mb-0">
+                <label for="pollDescription" class="form-label">Description</label>
+                <textarea id="pollDescription" class="form-control" rows="3" placeholder="Décrivez le but de votre sondage..."></textarea>
+            </div>
+        </div>
+
+        <!-- Questions Builder -->
+        <div class="section-block">
+            <h5><i class="bi bi-list-check" style="color:var(--accent);"></i>Questions</h5>
+
+            <div id="questionsContainer" class="mb-3">
+                <!-- Questions rendered by JS -->
+                <div class="empty-questions" id="emptyState">
+                    <i class="bi bi-question-circle display-5 d-block mb-2"></i>
+                    <p class="mb-0">Cliquez sur un type de question ci-dessous pour commencer.</p>
+                </div>
+            </div>
+
+            <!-- Add Question Buttons -->
+            <div class="d-flex flex-wrap gap-2 pt-3" style="border-top:1px solid var(--border);">
+                <button class="add-type-btn" onclick="addQuestion('text')">
+                    <i class="bi bi-textarea-t"></i> + Texte libre
+                </button>
+                <button class="add-type-btn" onclick="addQuestion('choice_single')">
+                    <i class="bi bi-ui-radios"></i> + Choix unique
+                </button>
+                <button class="add-type-btn" onclick="addQuestion('choice_multiple')">
+                    <i class="bi bi-ui-checks"></i> + Choix multiple
+                </button>
+                <button class="add-type-btn" onclick="addQuestion('scale')">
+                    <i class="bi bi-sliders"></i> + Échelle (1-5)
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- RIGHT: Settings -->
+    <div class="col-lg-4">
+
+        <!-- Settings -->
+        <div class="section-block" style="position:sticky;top:80px;">
+            <h5><i class="bi bi-gear" style="color:var(--warning);"></i>Paramètres</h5>
+
+            <!-- Switches -->
+            <div class="mb-3">
+                <div class="form-check form-switch mb-2">
+                    <input class="form-check-input" type="checkbox" id="isAnonymous">
+                    <label class="form-check-label" for="isAnonymous">Sondage anonyme</label>
+                </div>
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="isTemplate">
+                    <label class="form-check-label" for="isTemplate">Sauvegarder comme modèle</label>
+                </div>
+            </div>
+
+            <hr style="border-color:var(--border);margin:1rem 0;">
+
+            <div class="mb-3">
+                <label for="pollPassword" class="form-label">Mot de passe (optionnel)</label>
+                <input type="password" id="pollPassword" class="form-control" placeholder="Laisser vide = sans MDP">
+            </div>
+
+            <div class="mb-3">
+                <label for="expiresAt" class="form-label">Date d'expiration</label>
+                <input type="datetime-local" id="expiresAt" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label for="limitPerIp" class="form-label">Limite par IP <span class="text-muted">(0 = illimité)</span></label>
+                <input type="number" id="limitPerIp" class="form-control" value="0" min="0">
+            </div>
+
+            <div class="mb-4">
+                <label for="limitPerUser" class="form-label">Limite par utilisateur</label>
+                <input type="number" id="limitPerUser" class="form-control" value="1" min="0">
+            </div>
+
+            <!-- Save Button -->
+            <button class="save-btn w-100" id="btnSave" onclick="savePoll()">
+                <i class="bi bi-send-fill me-2"></i>Publier le sondage
+            </button>
+            <p class="text-muted small text-center mt-2 mb-0">
+                <i class="bi bi-eye me-1"></i>Le sondage sera immédiatement actif.
+            </p>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Variables from Django to JS
+    window.CREATE_POLL_URL = "{% url 'create_poll' %}";
+    window.DASHBOARD_URL   = "{% url 'dashboard' %}";
+    window.CSRF_TOKEN      = "{{ csrf_token }}";
+</script>
+<script src="{% static 'js/create_poll.js' %}"></script>
+<script>
+    const tmplData = {{ template_data|default:"null"|safe }};
+    if (tmplData) {
+        initFromTemplate(tmplData);
+    }
+</script>
+{% endblock %}
