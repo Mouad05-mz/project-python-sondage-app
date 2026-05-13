@@ -1,0 +1,1140 @@
+--- PAGE 1 ---
+ 
+Rapport de Projet DJANGO  
+SondagePro – Application Web de Sondages Dynamiques  
+Réalisé par:  
+                                                            Mouad Mezyan  
+                                                          Marouane Younsi  
+Établissement:  
+EMSI  
+Année Universitaire:  
+2025 -2026  
+Encadré par:  
+M.ABOUABID Hamza  
+ 
+Remerciements  
+Nous tenons à exprimer notre profonde gratitude à toutes les personnes qui ont contribué, 
+de pr aaaaaac s ou de loin, à la réalisation de ce projet. Nos remerciements s’adresse nt en 
+premier lieu à nos professeurs pour leur encadrement précieux, leurs conseils avisés et 
+leur disponibilité constante. Leur expertise a été un pilier essentiel dans la structuration de 
+notre démarche et la résolution des défis techniques rencontrés.  
+Nous remercions également nos familles et amis pour leur soutien inconditionnel et leur 
+patience tout au long de ce parcours. Leur encouragement a été une source de motivation 
+inestimable.  
+Enfin, nous souhaitons remercier l’ensemble de la communauté open -source, dont les 
+ressources et les outils (Django, Python, MySQL, Bootstrap, Chart.js) ont été fondamentaux 
+
+
+--- PAGE 2 ---
+pour le développement de SondagePro. Leur contribution collective a permis de bâtir une 
+base solide pour notre application.  
+ 
+Table des matières  
+ 
+Remerciements  ................................ ................................ ................................ ................................ ......................... 1 
+Table des matières  ................................ ................................ ................................ ................................ .................. 2 
+Résumé du projet  ................................ ................................ ................................ ................................ ..................... 4 
+Introduction  générale  ................................ ................................ ................................ ................................ ............ 5 
+1. Présentation du projet ................................ ................................ ................................ ................................ ......5 
+Contexte  ................................ ................................ ................................ ................................ ................................ ...5 
+Objectifs  ................................ ................................ ................................ ................................ ................................ ...5 
+Problématique  ................................ ................................ ................................ ................................ ...................... 6 
+Solution proposée  ................................ ................................ ................................ ................................ ............... 6 
+2. Cahier des charges  ................................ ................................ ................................ ................................ .............. 6 
+Besoins fonctionnels  ................................ ................................ ................................ ................................ ......... 7 
+Besoins non fonctionnels  ................................ ................................ ................................ ................................ 8 
+Cont raintes techniques  ................................ ................................ ................................ ................................ ....9 
+Technologies choisies  ................................ ................................ ................................ ................................ .......9 
+3. Analyse et conception  ................................ ................................ ................................ ................................ .... 10 
+Architecture MVT Django  ................................ ................................ ................................ ............................  10 
+Description de la base de données  ................................ ................................ ................................ ..........  10 
+Diagramme de cas d’utilisation  ................................ ................................ ................................ .................  12 
+Diagramme de séquence  ................................ ................................ ................................ ..............................  14 
+Diagramme de classes  ................................ ................................ ................................ ................................ ... 15 
+Diagramme de transition d’état  ................................ ................................ ................................ ................  18 
+Diagramme d’activité  ................................ ................................ ................................ ................................ ..... 20 
+4. Conception de la base de données  ................................ ................................ ................................ ...........  21 
+Entités de la base de données  ................................ ................................ ................................ ....................  21 
+5. Développement de l’application  ................................ ................................ ................................ ...............  24 
+Structure du projet Django ................................ ................................ ................................ ..........................  24 
+Gestion des routes (URLs)  ................................ ................................ ................................ ...........................  25 
+Gestion des vues  ................................ ................................ ................................ ................................ ...............  25 
+
+--- PAGE 3 ---
+Modèles Django ................................ ................................ ................................ ................................ .................  26 
+Formulaires dynamiques (Django Forms)  ................................ ................................ ..........................  27 
+Authentification (Django Authentication)  ................................ ................................ ...........................  28 
+Sécurité CSRF  ................................ ................................ ................................ ................................ .....................  28 
+Responsive Design Bootstrap  ................................ ................................ ................................ ....................  28 
+JavaScript AJAX / Fetch API  ................................ ................................ ................................ ........................  28 
+Intégration Chart.js  ................................ ................................ ................................ ................................ .........  28 
+6. Fonctionnalités implément ées ................................ ................................ ................................ ..................  28 
+Authentification et Gestion des Utilisateurs  ................................ ................................ .......................  29 
+Création de Sondages Dynamiques  ................................ ................................ ................................ .........  29 
+Questions Conditionnelles  ................................ ................................ ................................ ...........................  29 
+Partage via Lien Unique  ................................ ................................ ................................ ................................  29 
+Exportation des Résultat s (CSV) ................................ ................................ ................................ ...............  29 
+Tableau de Bord et Statistiques  ................................ ................................ ................................ ................  29 
+Visualisation Graphique avec Chart.js  ................................ ................................ ................................ ... 29 
+Notifications  ................................ ................................ ................................ ................................ .......................  30 
+Protection par Mot de Passe  ................................ ................................ ................................ .......................  30 
+Limitation par IP  ................................ ................................ ................................ ................................ ..............  30 
+7. Difficultés rencontrées et solutions  ................................ ................................ ................................ ........ 30 
+Compatibilité MySQL  ................................ ................................ ................................ ................................ ..... 30 
+Communic ation Frontend/Backend (AJAX/Fetch API)  ................................ ................................  30 
+Gestion des relations ORM (One -to-Many, Many -to-Many)  ................................ ........................  31 
+Validation des formulaires dynamiques  ................................ ................................ ...............................  31 
+Sécurité (CSRF, XSS, Injection SQL) ................................ ................................ ................................ .........  31 
+Gestion des permissions et accès  ................................ ................................ ................................ .............  32 
+8. Tests et validation  ................................ ................................ ................................ ................................ ...........  32 
+Tests fonctionnels  ................................ ................................ ................................ ................................ ............  32 
+Validation des formulaires  ................................ ................................ ................................ ..........................  33 
+Tests utilisateurs (User Acceptance Testing - UAT)  ................................ ................................ ....... 33 
+Captures des résultats  ................................ ................................ ................................ ................................ ... 33 
+9. Perspectives d’amélioration  ................................ ................................ ................................ .......................  35 
+Notifications temps réel  ................................ ................................ ................................ ...............................  35 
+API mobile  ................................ ................................ ................................ ................................ ...........................  35 
+IA pour analyse des réponses  ................................ ................................ ................................ ....................  35 
+
+--- PAGE 4 ---
+Système de recommandation  ................................ ................................ ................................ .....................  35 
+Multilingue  ................................ ................................ ................................ ................................ ..........................  35 
+Hébergement cloud ................................ ................................ ................................ ................................ .........  36 
+10. Conclusion générale  ................................ ................................ ................................ ................................ ..... 36 
+11. Webographie  ................................ ................................ ................................ ................................ ...................  36 
+11. Annexes  ................................ ................................ ................................ ................................ ..............................  37 
+Extraits de code  ................................ ................................ ................................ ................................ ................  37 
+Captures d’écran  ................................ ................................ ................................ ................................ ..............  37 
+Structure du projet  ................................ ................................ ................................ ................................ ..........  42 
+Commandes d’installation et de démarrage  ................................ ................................ .......................  42 
+ 
+ 
+ 
+Résumé du projet  
+Le projet SondagePro – Application Web de Sondages Dynamiques  a pour objectif de 
+concevoir et de développer une plateforme web robuste et intuitive permettant la création, 
+la diffusion, la gestion et l’analyse de sondages en ligne. Face à un besoin croissant d’outils 
+flexibles pour la collecte de données et l’évalua tion d’opinions, SondagePro propose une 
+solution complète, allant de la conception de questionnaires personnalisables à l’analyse 
+graphique des réponses et à l’exportation des données.  
+L’application est développée en utilisant le framework web Django  (Pyth on) suivant 
+l’architecture Model -View -Template (MVT), avec MySQL  comme système de gestion de 
+base de données. L’interface utilisateur est construite avec Bootstrap 5  pour un design 
+réactif et moderne, tandis que JavaScript (ES6)  et Chart.js  sont employés p our les 
+fonctionnalités dynamiques et la visualisation des données. Le projet intègre des 
+fonctionnalités avancées telles que la gestion des utilisateurs, les questions conditionnelles, 
+les sondages anonymes, les notifications et la possibilité de créer de s modèles de sondages 
+réutilisables.  
+Ce rapport détaille les différentes phases du projet, depuis l’analyse des besoins jusqu’au 
+développement et aux perspectives d’amélioration. Il met en lumière les choix 
+technologiques, la conception architecturale, les  défis rencontrés et les solutions apportées, 
+ainsi que les fonctionnalités implémentées et les tests effectués. L’objectif est de présenter 
+une application fonctionnelle, sécurisée et évolutive, répondant aux exigences d’un 
+environnement universitaire et professionnel.  
+ 
+
+--- PAGE 5 ---
+Introduction générale  
+Dans un monde de plus en plus connecté, la collecte et l’analyse d’informations via des 
+sondages en ligne sont devenues des pratiques courantes et indispensables pour les 
+entreprises, les institutions académiques et les organisations de toutes tailles. Que ce soit 
+pour évaluer la satisfaction client, mener des études de marché, recueillir des avis ou 
+réaliser des enquêtes internes, les plateformes de sondage offrent un moyen efficace et 
+rapide d’interagir avec un publ ic ciblé. Cependant, de nombreuses solutions existantes 
+peuvent s’avérer coûteuses, rigides ou manquer de fonctionnalités avancées adaptées aux 
+besoins spécifiques des utilisateurs.  
+Le projet SondagePro  s’inscrit dans cette dynamique en proposant une appli cation web 
+dynamique et personnalisable, conçue pour répondre à un large éventail de besoins en 
+matière de sondage. L’objectif principal est de fournir une plateforme qui non seulement 
+simplifie le processus de création et de diffusion de sondages, mais qu i offre également des 
+outils d’analyse puissants pour transformer les données brutes en informations 
+exploitables. En tirant parti des technologies modernes de développement web, nous 
+visons à créer une solution à la fois performante, sécurisée et facile à  utiliser.  
+Ce rapport a pour but de documenter l’intégralité du processus de développement de 
+SondagePro. Il couvre la justification du projet, les objectifs fixés, la méthodologie adoptée, 
+les choix techniques, la conception détaillée de l’architecture et  de la base de données, les 
+étapes de développement, les fonctionnalités clés implémentées, les défis surmontés, ainsi 
+que les perspectives d’évolution future. Il s’agit d’une synthèse académique et technique, 
+reflétant l’approche rigoureuse et les apprent issages tirés de ce projet de fin d’études. 
+L’ensemble du document est structuré pour offrir une compréhension claire et exhaustive 
+de l’application SondagePro et de son processus de création.  
+ 
+1. Présentation du projet  
+Contexte  
+Le besoin de collecter des  données et des opinions de manière structurée est omniprésent 
+dans de nombreux domaines. Les méthodes traditionnelles de sondage, souvent manuelles 
+ou basées sur des outils limités, peuvent être chronophages, coûteuses et peu efficaces 
+pour atteindre un l arge public. L’émergence des technologies web a ouvert la voie à des 
+solutions plus agiles et interactives. Cependant, il existe un écart entre les outils génériques 
+disponibles et les exigences spécifiques des projets nécessitant une grande flexibilité, u ne 
+personnalisation poussée et une analyse de données sophistiquée. SondagePro vise à 
+combler ce vide en offrant une plateforme conçue spécifiquement pour des sondages 
+dynamiques et complexes.  
+Objectifs  
+Les objectifs principaux du projet SondagePro sont le s suivants :  
+
+--- PAGE 6 ---
+• Développer une plateforme de sondage complète :  Permettre aux utilisateurs de 
+créer, gérer, diffuser et analyser des sondages de manière intuitive.  
+• Offrir une personnalisation avancée :  Inclure des types de questions variés, des 
+questions cond itionnelles et la possibilité de créer des modèles réutilisables.  
+• Assurer une analyse de données efficace :  Fournir des outils de visualisation 
+graphique des résultats (via Chart.js) et des options d’exportation (CSV/Excel).  
+• Garantir la sécurité et la conf identialité :  Mettre en œuvre un système 
+d’authentification robuste, la gestion des permissions, la protection CSRF et la 
+possibilité de sondages anonymes.  
+• Proposer une interface utilisateur moderne et réactive :  Utiliser Bootstrap 5 
+pour une expérience ut ilisateur optimale sur différents appareils.  
+• Faciliter la gestion des utilisateurs :  Permettre l’inscription, la connexion et la 
+gestion des profils pour les créateurs de sondages et les participants.  
+• Intégrer des notifications :  Informer les utilisateurs des événements importants 
+liés à leurs sondages.  
+Problématique  
+Comment concevoir et développer une application web de sondages dynamiques, basée sur 
+le framework Django, qui soit à la fois performante, sécurisée, hautement personnalisable 
+et capable de gér er efficacement la collecte, l’analyse et la présentation des données, tout 
+en offrant une expérience utilisateur fluide et intuitive ? La problématique réside dans la 
+conciliation des exigences de flexibilité fonctionnelle, de robustesse technique et 
+d’er gonomie, en tenant compte des contraintes de temps et de ressources inhérentes à un 
+projet universitaire.  
+Solution proposée  
+La solution proposée est une application web modulaire, SondagePro , développée avec 
+Django  pour le backend, tirant parti de son architecture MVT (Model -View -Template) pour 
+une séparation claire des préoccupations. La base de données MySQL  est choisie pour sa 
+fiabilité et sa performance. Le frontend utilise HTML5, CSS3 (avec Bootstrap 5)  pour le  
+style et la réactivité, et JavaScript (ES6)  pour l’interactivité, notamment avec l’intégration 
+de Chart.js  pour les visualisations. L’application mettra en œuvre un système 
+d’authentification et de gestion des permissions de Django, ainsi que des mécanism es de 
+sécurité comme la protection CSRF. Des fonctionnalités clés telles que la création de 
+sondages avec questions conditionnelles, la diffusion par lien, l’analyse graphique et 
+l’exportation des résultats seront au cœur de la solution, garantissant une p lateforme 
+complète et efficace pour la gestion des sondages dynamiques.  
+ 
+2. Cahier des charges  
+Le cahier des charges de SondagePro a été élaboré pour définir précisément les attentes et 
+les exigences du projet, tant sur le plan fonctionnel que non fonctio nnel. Il sert de référence 
+
+--- PAGE 7 ---
+tout au long du cycle de développement, assurant que le produit final répond aux besoins 
+identifiés et aux contraintes techniques.  
+Besoins fonctionnels  
+Les besoins fonctionnels décrivent les services que le système doit fournir a ux utilisateurs. 
+Pour SondagePro, ils incluent :  
+• Gestion des utilisateurs :  
+– Inscription et connexion sécurisées des utilisateurs (créateurs de sondages et 
+participants).  
+– Gestion des profils utilisateurs (modification des informations personnelles, 
+mot de passe).  
+– Gestion des rôles et permissions (distinction entre créateurs et participants).  
+• Création et gestion de sondages :  
+– Interface intuitive pour la création de nouveaux sondages.  
+– Possibilité de définir le titre, la description, la date de début et de fin  du 
+sondage.  
+– Ajout de différents types de questions (choix multiple, réponse unique, texte 
+libre, échelle de Likert).  
+– Gestion des questions conditionnelles (affichage d’une question en fonction 
+de la réponse à une question précédente).  
+– Configuration des so ndages anonymes ou nominatifs.  
+– Protection des sondages par mot de passe.  
+– Activation/désactivation et suppression de sondages.  
+– Création et utilisation de modèles de sondages réutilisables.  
+• Diffusion de sondages :  
+– Génération de liens uniques pour le partage des sondages.  
+– Possibilité de partager les sondages via différentes plateformes (e -mail, 
+réseaux sociaux).  
+• Participation aux sondages :  
+– Interface claire et simple pour les participants afin de répondre aux 
+questions.  
+– Validation des réponses pour assurer la cohérence des données.  
+– Possibilité de modifier les réponses avant la soumission finale (si autorisé 
+par le créateur).  
+• Analyse et visualisation des résultats :  
+– Tableau de bord pour les créateurs de sondages affichant un aperçu des 
+résultats.  
+– Visualisation g raphique des réponses pour chaque question (diagrammes 
+circulaires, barres, etc. via Chart.js).  
+– Statistiques détaillées (nombre de participants, taux de complétion, 
+moyennes, etc.).  
+
+--- PAGE 8 ---
+• Exportation des données :  
+– Exportation des résultats des sondages au format  CSV et Excel.  
+• Notifications :  
+– Système de notification pour informer les créateurs de nouvelles 
+participations ou de la fin d’un sondage.  
+– Notifications pour les participants concernant les sondages auxquels ils sont 
+invités.  
+Besoins non fonctionnels  
+Les be soins non fonctionnels décrivent les qualités du système, telles que la performance, 
+la sécurité et l’utilisabilité.  
+• Performance :  
+– Temps de chargement des pages rapide, même avec un grand nombre de 
+questions ou de participants.  
+– Traitement efficace des soum issions de sondages.  
+– Gestion optimisée des requêtes de base de données.  
+• Sécurité :  
+– Protection contre les attaques CSRF (Cross -Site Request Forgery) et XSS 
+(Cross -Site Scripting).  
+– Authentification et autorisation robustes.  
+– Sécurisation des données sensibles  des utilisateurs et des réponses aux 
+sondages.  
+– Protection par mot de passe pour l’accès aux sondages.  
+– Limitation par IP pour éviter les réponses multiples frauduleuses.  
+• Utilisabilité :  
+– Interface utilisateur intuitive et facile à prendre en main pour tous les types 
+d’utilisateurs.  
+– Design réactif (Responsive Design) pour une accessibilité optimale sur 
+différents appareils (ordinateurs, tablettes, smartphones).  
+– Messages d’erreur clairs et informatifs.  
+• Fiabilité :  
+– Disponibilité élevée du système.  
+– Gestion des e rreurs et récupération en cas de panne.  
+• Maintenabilité et Évolutivité :  
+– Code bien structuré, commenté et conforme aux bonnes pratiques de 
+développement Django.  
+– Facilité d’ajout de nouvelles fonctionnalités et de modification des existantes.  
+– Capacité à gérer une augmentation du nombre d’utilisateurs et de sondages.  
+
+--- PAGE 9 ---
+Contraintes techniques  
+Les contraintes techniques sont les limitations imposées par l’environnement ou les choix 
+technologiques.  
+• Framework :  Utilisation exclusive de Django pour le développeme nt backend.  
+• Langage de programmation :  Python pour le backend, JavaScript (ES6) pour le 
+frontend.  
+• Base de données :  MySQL comme système de gestion de base de données 
+relationnelle.  
+• Frontend :  Utilisation de Bootstrap 5 pour le framework CSS et Chart.js pou r la 
+visualisation des données.  
+• Architecture :  Respect de l’architecture MVT (Model -View -Template) de Django.  
+• Déploiement :  Le rapport ne couvre pas le déploiement mais doit prendre en 
+compte les bonnes pratiques pour un déploiement futur.  
+Technologies cho isies  
+Les technologies sélectionnées pour le projet SondagePro sont les suivantes, justifiées par 
+leur robustesse, leur popularité, leur écosystème riche et leur adéquation avec les objectifs 
+du projet :  
+• Python :  Langage de programmation principal pour le backend, apprécié pour sa 
+lisibilité, sa polyvalence et sa vaste bibliothèque standard.  
+• Django :  Framework web de haut niveau en Python, qui encourage le 
+développement rapide et la conception pragmatique et propr e. Son architecture 
+MVT est idéale pour des applications complexes.  
+• MySQL :  Système de gestion de base de données relationnelle open -source, reconnu 
+pour sa performance, sa fiabilité et sa scalabilité, adapté aux besoins de stockage de 
+données structurées.  
+• Django Forms :  Module de Django pour la création et la gestion de formulaires web, 
+facilitant la validation des données et la protection CSRF.  
+• Django Authentication :  Système d’authentification et d’autorisation intégré à 
+Django, offrant une gestion sécur isée des utilisateurs et des sessions.  
+• JavaScript (ES6) :  Langage de script côté client pour l’interactivité des pages web et 
+les requêtes asynchrones (AJAX/Fetch API).  
+• Bootstrap 5 :  Framework CSS populaire pour le développement d’interfaces web 
+réactives et mobiles -first, assurant une présentation cohérente et moderne.  
+• Chart.js :  Bibliothèque JavaScript pour la création de graphiques simples et 
+flexibles, essentielle pour la visualisation des résultats de sondages.  
+• Django REST Framework (optionnel) :  Cadre  puissant et flexible pour la 
+construction d’APIs web, envisagé pour des extensions futures comme une API 
+mobile.  
+ 
+
+--- PAGE 10 ---
+3. Analyse et conception  
+Cette section détaille l’approche adoptée pour l’analyse des besoins et la conception 
+architecturale de l’applicati on SondagePro. Une attention particulière a été portée à la 
+modularité, à la scalabilité et à la maintenabilité du système, en s’appuyant sur les 
+principes de conception logicielle et les spécificités du framework Django.  
+Architecture MVT Django  
+L’applicat ion SondagePro est conçue autour de l’architecture Model -View -Template 
+(MVT)  de Django, qui est une variation du modèle Model -View -Controller (MVC). Cette 
+architecture favorise une séparation claire des préoccupations, ce qui facilite le 
+développement, la maintenance et l’évolutivité du projet.  
+• Modèle (Model) :  Représente la structure des données de l’application et gère 
+l’interaction avec la base de données. Dans SondagePro, les modèles définissent les 
+entités telles que Utilisateur , Sondage , Question , Réponse , etc., et encapsulent la 
+logique métier liée aux données. Django ORM (Object -Relational Mapper) est utilisé 
+pour interagir avec la base de données MySQL, permettant de manipuler les 
+données Python sans écrire de requêtes SQL brutes.  
+• Vue (View) :  Gère la logique métier et le traitement des requêtes HTTP. Une vue 
+reçoit une requête web, interagit avec le modèle pour récupérer ou modifier des 
+données, puis passe ces données à un template pour le rendu. Dans SondagePro, les 
+vues sont responsables de la création de sondages, de l’affichage des questions, de la 
+soumission des réponses, de l’authentification des utilisateurs et de la génération 
+des statistiques.  
+• Template (Template) :  Définit la structure de l’interface utilisateur. Les templates 
+sont des fi chiers HTML qui contiennent des balises et une logique de template 
+Django pour afficher dynamiquement les données fournies par la vue. Ils sont 
+responsables de la présentation visuelle de l’application, y compris les formulaires 
+de sondage, les tableaux de  bord des résultats et les pages d’authentification.  
+Cette architecture permet une organisation logique du code, où chaque composant a une 
+responsabilité bien définie, ce qui améliore la clarté du projet et la collaboration entre 
+développeurs.  
+Description de la base de données  
+La base de données de SondagePro est conçue pour stocker toutes les informations 
+relatives aux utilisateurs, aux sondages, aux questions, aux choix de réponses et aux 
+réponses des participants. MySQL a été choisi pour sa robustesse et  sa performance. La 
+conception de la base de données est relationnelle, avec des tables interconnectées via des 
+clés primaires et étrangères pour assurer l’intégrité référentielle des données. Les modèles 
+Django sont directement mappés aux tables de la bas e de données, simplifiant ainsi les 
+opérations CRUD (Create, Read, Update, Delete).  
+Les principales entités de la base de données incluent :  
+
+--- PAGE 11 ---
+• Utilisateur :  Stocke les informations des utilisateurs (créateurs et participants), y 
+compris les identifiants d’au thentification.  
+• Sondage :  Contient les détails de chaque sondage (titre, description, dates, statut, 
+créateur).  
+• Question :  Définit les questions associées à un sondage (texte de la question, type 
+de question, ordre).  
+• Choix :  Pour les questions à choix multiples ou uniques, cette entité stocke les 
+options de réponse possibles.  
+• Réponse :  Enregistre les réponses des participants à chaque question d’un sondage.  
+• ModèleSondage :  Permet de sauvegarder des structures de sondages réut ilisables.  
+• Notification :  Gère les notifications envoyées aux utilisateurs.  
+• Export :  Enregistre les informations relatives aux exportations de données.  
+Une description plus détaillée de chaque entité sera fournie dans la section 8. Conception 
+de la base de  données.  
+
+--- PAGE 12 ---
+Diagramme de cas d’utilisation  
+
+--- PAGE 13 ---
+ 
+
+
+--- PAGE 14 ---
+Le diagramme de cas d’utilisation identifie les principales fonctionnalités du système et les 
+interactions entre les acteurs (utilisateurs) et le système. Pour SondagePro, les acteurs 
+principaux sont le Créateur d e Sondage et le Participant. Les cas d’utilisation incluent la 
+création de sondages, la participation à un sondage, la visualisation des résultats, la gestion 
+des utilisateurs, etc.  
+Diagramme de séquence  
+ 
+Le diagramme de séquence illustre l’ordre chronolo gique des interactions entre les objets 
+du système pour réaliser un cas d’utilisation spécifique. Par exemple, un diagramme de 
+séquence pourrait montrer le flux d’événements lors de la création d’un sondage ou de la 
+soumission d’une réponse.  
+
+
+--- PAGE 15 ---
+Diagramme de c lasses  
+
+--- PAGE 16 ---
+ 
+
+
+--- PAGE 17 ---
+Le diagramme de classes représente la structure statique du système en montrant les 
+classes, leurs attributs, leurs méthodes et les relations entre elles. Pour SondagePro, ce 
+diagramme détaillera les classes correspondant aux modèles Django (Utili sateur, Sondage, 
+Question, Réponse, etc.) et leurs associations.  
+
+--- PAGE 18 ---
+Diagramme de transition d’état   
+
+--- PAGE 19 ---
+ 
+
+
+--- PAGE 20 ---
+Diagramme d’activité  
+  
+Le diagramme d’activité modélise le flux de travail ou les processus métier. Il est utile pour 
+décrire la logique derrière des opérations complexes, comme le processus de création d’un 
+sondage avec des questions conditionnelles ou le flux de validation des réponses.  
+ 
+
+
+--- PAGE 21 ---
+4. Conception de la base de données  
+La conception de la base de données est un élément crucial pour la robustesse et la 
+performance de l’application SondagePro. Elle a été élaborée en tenant compte des besoins 
+fonctionnels et non fonctionnels, en s’appuyant sur le modèle relationnel et en utilisant 
+l’ORM de Django pour une intégration fluide avec le code Python. Les e ntités principales et 
+leurs attributs sont décrits ci -dessous.  
+Entités de la base de données  
+Utilisateur  
+Cette entité représente les utilisateurs de la plateforme, qu’ils soient créateurs de sondages 
+ou simples participants. Elle hérite du modèle AbstractU ser de Django pour bénéficier des 
+fonctionnalités d’authentification et d’autorisation intégrées.  
+• id (clé primaire)  
+• username  (nom d’utilisateur unique)  
+• email  (adresse email unique)  
+• password  (mot de passe haché)  
+• first_name  
+• last_name  
+• is_creator  (booléen, ind ique si l’utilisateur peut créer des sondages)  
+• date_joined  
+• last_login  
+Créateur  
+Cette entité représente un utilisateur ayant les privilèges de créer et gérer des sondages. 
+Elle peut être une extension du modèle Utilisateur  ou y être liée par une relation On e-to-
+One.  
+• id (clé primaire, liée à Utilisateur ) 
+• user  (clé étrangère vers Utilisateur ) 
+• organisation  (nom de l’organisation du créateur, optionnel)  
+Participant  
+Cette entité représente un utilisateur qui répond à un sondage. Un participant peut être un 
+utilisateur enregistré ou un utilisateur anonyme.  
+• id (clé primaire)  
+• user  (clé étrangère vers Utilisateur , optionnel pour les participants anonymes)  
+• session_id  (identifiant de session pour les participants anonymes)  
+• ip_address  (adresse IP du participant, pour la limitation)  
+
+--- PAGE 22 ---
+Sondage  
+Représente un sondage créé par un Créateur . 
+• id (clé primaire)  
+• creator  (clé étrangère vers Créateur ) 
+• title  (titre du sondage)  
+• description  
+• start_date  
+• end_date  
+• is_active  (booléen)  
+• is_anonymous  (booléen,  permet les réponses anonymes)  
+• password_protected  (booléen)  
+• password  (mot de passe du sondage, si protégé)  
+• share_link  (lien unique pour le sondage)  
+• created_at  
+• updated_at  
+Question  
+Représente une question au sein d’un Sondage . 
+• id (clé primaire)  
+• survey  (clé é trangère vers Sondage ) 
+• text  (texte de la question)  
+• question_type  (choix: ‘text’, ‘radio’, ‘checkbox’, ‘scale’)  
+• order  (ordre d’affichage de la question)  
+• is_required  (booléen)  
+• parent_question  (clé étrangère vers Question , pour les questions conditionnelles)  
+• parent_answer_value  (valeur de réponse de la question parente pour afficher cette 
+question)  
+Choix  
+Représente une option de réponse pour les questions de type ‘radio’ ou ‘checkbox’.  
+• id (clé primaire)  
+• question  (clé étrangère vers Question ) 
+• text  (texte du cho ix) 
+• value  (valeur associée au choix)  
+Réponse  
+Enregistre la réponse d’un Participant  à une Question  spécifique.  
+• id (clé primaire)  
+
+--- PAGE 23 ---
+• participant  (clé étrangère vers Participant ) 
+• question  (clé étrangère vers Question ) 
+• answer_text  (pour les questions de type ‘te xt’) 
+• selected_choice  (clé étrangère vers Choix , pour les questions ‘radio’/‘checkbox’)  
+• answer_value  (pour les questions de type ‘scale’ ou autres valeurs numériques)  
+• submitted_at  
+Notification  
+Gère les notifications envoyées aux utilisateurs.  
+• id (clé primai re) 
+• user  (clé étrangère vers Utilisateur ) 
+• message  
+• is_read  (booléen)  
+• created_at  
+Export  
+Enregistre les informations relatives aux exportations de données.  
+• id (clé primaire)  
+• survey  (clé étrangère vers Sondage ) 
+• file_type  (CSV, Excel)  
+• file_path  (chemin vers le fichier exporté)  
+• exported_by  (clé étrangère vers Utilisateur ) 
+• exported_at  
+ModèleSondage  
+Permet de sauvegarder des structures de sondages réutilisables.  
+• id (clé primaire)  
+• creator  (clé étrangère vers Créateur ) 
+• name  (nom du modèle)  
+• descriptio n 
+• template_data  (JSON ou autre format pour stocker la structure du sondage)  
+• created_at  
+• updated_at  
+Cette structure de base de données, implémentée via l’ORM de Django, assure une gestion 
+efficace et cohérente des données de l’application SondagePro, tout en  offrant la flexibilité 
+nécessaire pour les évolutions futures.  
+ 
+
+--- PAGE 24 ---
+5. Développement de l’application  
+Le développement de l’application SondagePro a suivi une approche structurée, tirant parti 
+des fonctionnalités robustes de Django pour le backend et des tec hnologies modernes du 
+frontend pour une expérience utilisateur riche. Cette section détaille les aspects clés de 
+l’implémentation.  
+Structure du projet Django  
+Le projet Django est organisé de manière modulaire, avec une application principale 
+(sondagepro_co re) gérant les configurations globales et des applications spécifiques pour 
+les fonctionnalités ( users , surveys , results , notifications ). Cette structure favorise la 
+réutilisabilité du code et une meilleure gestion des dépendances.  
+/sondagepro_project  
+├── manage.py  
+├── sondagepro_project/  
+│   ├── __init__.py  
+│   ├── settings.py  
+│   ├── urls.py  
+│   └── wsgi.py  
+├── users/  
+│   ├── migrations/  
+│   ├── __init__.py  
+│   ├── admin.py  
+│   ├── apps.py  
+│   ├── models.py  
+│   ├── tests.py  
+│   └── views.py  
+├── surveys/  
+│   ├── migrations/  
+│   ├── __init__.py  
+│   ├── admin.py  
+│   ├── apps.py  
+│   ├── models.py  
+│   ├── forms.py  
+│   ├── urls.py  
+│   ├── tests.py  
+│   └── views.py  
+├── results/  
+│   ├── migrations/  
+│   ├── __init__.py  
+│   ├── admin.py  
+│   ├── apps.py  
+│   ├── model s.py  
+│   ├── urls.py  
+│   ├── tests.py  
+│   └── views.py  
+├── notifications/  
+│   ├── migrations/  
+
+--- PAGE 25 ---
+│   ├── __init__.py  
+│   ├── admin.py  
+│   ├── apps.py  
+│   ├── models.py  
+│   ├── urls.py  
+│   ├── tests.py  
+│   └── views.py  
+├── templates/  
+│   ├── base.html  
+│   ├── users/  
+│   ├── surveys/  
+│   └── results/  
+├── static/  
+│   ├── css/  
+│   ├── js/  
+│   └── img/  
+└── media/  
+Gestion des routes (URLs)  
+Django utilise un système de routage basé sur des expressions régulières pour mapper les 
+URL aux vues correspondantes. Le fichier sondagepro_project/urls.py  sert de routeur 
+principal, incluant les URL des différentes applications. Chaque application ( users , 
+surveys , results , notifications ) possède son propre fichier urls.py  pour une meilleure 
+modularité.  
+Exemple de sondagepro_project/urls.py : 
+from django.contrib import admin  
+from django.urls import path, include  
+ 
+urlpatterns = [ 
+    path('admin/' , admin.sit e.urls),  
+    path('accounts/' , include( 'django.contrib.auth.urls' )), # Pour l'authenti
+fication de base  
+    path('users/' , include( 'users.urls' )), 
+    path('surveys/' , include( 'surveys.urls' )), 
+    path('results/' , include( 'results.urls' )), 
+    path('notifications/' , include( 'notifications.urls' )), 
+    path('', include( 'sondagepro_core.urls' )), # Page d'accueil ou autres URL
+s globales  
+] 
+Gestion des vues  
+Les vues Django sont des fonctions ou des classes Python qui reçoivent une requête web et 
+renvoient  une réponse web. Elles sont le cœur de la logique métier de l’application. Pour 
+SondagePro, les vues gèrent des opérations telles que la création, la modification et la 
+suppression de sondages, l’affichage des formulaires de réponse, la soumission des 
+réponses, et la présentation des résultats.  
+
+--- PAGE 26 ---
+Exemple de vue pour la création d’un sondage ( surveys/views.py ): 
+from django.shortcuts import render, redirect, get_object_or_404  
+from django.contrib.auth.decorators import login_required  
+from .forms import SurveyFo rm, QuestionFormSet  
+from .models import Survey  
+ 
+@login_required  
+def create_survey(request):  
+    if request.method == 'POST': 
+        survey_form = SurveyForm(request.POST)  
+        question_formset = QuestionFormSet(request.POST, prefix ='questions' ) 
+        if survey_form.is_valid() and question_formset.is_valid():  
+            survey = survey_form.save(commit =False) 
+            survey.creator = request.user.creator # Assumer que l'utilisateur 
+est un créateur  
+            survey.save()  
+            question_formset.instance = survey  
+            question_formset.save()  
+            return redirect( 'survey_detail' , pk=survey.pk)  
+    else: 
+        survey_form = SurveyForm()  
+        question_formset = QuestionFormSet(prefix ='questions' ) 
+    return render(reque st, 'surveys/create_survey.html' , { 
+        'survey_form' : survey_form,  
+        'question_formset' : question_formset  
+    }) 
+Modèles Django  
+Les modèles Django définissent la structure de la base de données et fournissent une API 
+de haut niveau pour interagir avec elle. Chaque modèle est une classe Python qui hérite de 
+django.db.models.Model  et représente une table dans la base de données. Les champs du 
+modèle correspondent aux colonnes de la table.  
+Exemple de modèle Survey  (surveys/models.py ): 
+from django.db import models  
+from users.models import Creator # Supposons que Creator est dans l'app users  
+ 
+class Survey(models.Model):  
+    creator = models.ForeignKey(Creator, on_delete =models.CASCADE)  
+    title = models.CharField(max_length =255) 
+    description = models.TextField(blank =True, null=True) 
+    start_date = models.DateTimeField()  
+    end_date = models.DateTimeField()  
+    is_active = models.Bo oleanField(default =True) 
+    is_anonymous = models.BooleanField(default =False) 
+    password_protected = models.BooleanField(default =False) 
+    password = models.CharField(max_length =128, blank=True, null=True) 
+
+--- PAGE 27 ---
+    share_link = models.URLField(max_length =200, blank=True, null=True) 
+    created_at = models.DateTimeField(auto_now_add =True) 
+    updated_at = models.DateTimeField(auto_now =True) 
+ 
+    def __str__(self): 
+        return self.title  
+ 
+    def save(self, *args, **kwargs):  
+        if not self.share_link : 
+            # Générer un lien unique, par exemple, basé sur un UUID ou un slu
+g 
+            self.share_link = f'/surveys/ {self.pk}/take/' # Ceci est un exemp
+le simplifié  
+        super().save( *args, **kwargs)  
+Formulaires dynamiques (Django Forms)  
+Django Forms est utilisé pour gérer la création et la validation des formulaires web. Pour 
+SondagePro, cela inclut les formulaires de création de sondages, d’ajout de questions, et de 
+soumission de réponses. L’utilisation de ModelForm  simplifie l’interacti on avec les modèles 
+de la base de données. Des formsets sont employés pour gérer dynamiquement plusieurs 
+questions et choix au sein d’un même formulaire.  
+Exemple de SurveyForm  et QuestionForm  (surveys/forms.py ): 
+from django import forms  
+from django.forms import inlineformset_factory  
+from .models import Survey, Question, Choice  
+ 
+class SurveyForm(forms.ModelForm):  
+    class Meta:  
+        model = Survey  
+        fields = ['title', 'description' , 'start_date' , 'end_date' , 'is_anony
+mous', 'password_protected' , 'password' ] 
+        widgets = { 
+            'start_date' : forms.DateTimeInput(attrs ={'type': 'datetime -local'
+}), 
+            'end_date' : forms.DateTimeInput(attrs ={'type': 'datetime -local'})
+, 
+            'password' : forms.PasswordInput(render_value =True), 
+        } 
+ 
+class QuestionForm(forms.ModelForm):  
+    class Meta:  
+        model = Question  
+        fields = ['text', 'question_type' , 'order', 'is_required' , 'parent_qu
+estion', 'parent_answer_value' ] 
+ 
+ChoiceFormSet = inlineformset_factory(Question, Choice, f ields=('text', 'valu
+e'), extra =1, can_delete =True) 
+
+--- PAGE 28 ---
+QuestionFormSet = inlineformset_factory(Survey, Question, form =QuestionForm, 
+extra=1, can_delete =True) 
+Authentification (Django Authentication)  
+Le système d’authentification intégré de Django est utilisé pour gérer l’inscription, la 
+connexion, la déconnexion et la gestion des mots de passe des utilisateurs. Un modèle 
+d’utilisateur personnalisé ( CustomUser  ou Utilisateur ) peut être étendu pour inclure des 
+champs spécifiques au projet, comme is_creator . 
+Sécu rité CSRF  
+Django intègre une protection robuste contre les attaques CSRF (Cross -Site Request 
+Forgery) via le middleware CsrfViewMiddleware  et le tag de template {% csrf_token %} . 
+Tous les formulaires POST dans SondagePro incluent ce token pour garantir la sécurité des 
+requêtes.  
+Responsive Design Bootstrap  
+L’interface utilisateur de SondagePro est développée avec Bootstrap 5 , un framework CSS 
+populaire qui assure un design réactif et mobile -first. Cela garantit que l’application est 
+entièrement fonctionnelle  et esthétiquement agréable sur une large gamme d’appareils, 
+des ordinateurs de bureau aux smartphones.  
+JavaScript AJAX / Fetch API  
+Pour une expérience utilisateur dynamique et sans rechargement de page, JavaScript (ES6) 
+est utilisé avec l’API Fetch pour e ffectuer des requêtes AJAX. Cela est particulièrement utile 
+pour des fonctionnalités comme la mise à jour en temps réel des résultats de sondage, la 
+gestion des questions conditionnelles sans soumettre le formulaire entier, ou la validation 
+asynchrone des entrées.  
+Intégration Chart.js  
+Chart.js  est intégré au frontend pour la visualisation graphique des résultats de sondage. 
+Les données sont récupérées via des requêtes AJAX depuis les vues Django et sont ensuite 
+utilisées par Chart.js pour générer des diagra mmes interactifs (barres, circulaires, lignes) 
+qui offrent une compréhension rapide et intuitive des réponses collectées.  
+ 
+6. Fonctionnalités implémentées  
+L’application SondagePro intègre un ensemble de fonctionnalités clés, développées pour 
+offrir une so lution complète et flexible de gestion de sondages. Ces fonctionnalités 
+répondent aux besoins identifiés dans le cahier des charges et exploitent les capacités des 
+technologies choisies.  
+
+--- PAGE 29 ---
+Authentification et Gestion des Utilisateurs  
+Le système d’authentific ation de Django a été mis en œuvre pour gérer l’accès à la 
+plateforme. Les utilisateurs peuvent s’inscrire, se connecter et gérer leur profil. Une 
+distinction est faite entre les créateurs de sondages et les participants, avec des rôles et 
+permissions adap tés. Les sessions utilisateur sont gérées de manière sécurisée, 
+garantissant que seuls les utilisateurs autorisés peuvent accéder aux fonctionnalités 
+spécifiques.  
+Création de Sondages Dynamiques  
+Les créateurs disposent d’une interface intuitive pour concevoir des sondages. Ils peuvent 
+définir le titre, la description, les dates de début et de fin, et choisir parmi plusieurs types 
+de questions : texte libre, choix unique (radio), choix multiples (checkbox), et échelle de 
+Likert. La flexibilité de cette  fonctionnalité permet de construire des questionnaires 
+adaptés à une grande variété d’enquêtes.  
+Questions Conditionnelles  
+Une fonctionnalité avancée implémentée est la gestion des questions conditionnelles. Cela 
+permet d’afficher ou de masquer certaines q uestions en fonction des réponses données aux 
+questions précédentes. Cette logique dynamique rend les sondages plus pertinents pour les 
+participants et améliore la qualité des données collectées en évitant les questions non 
+applicables.  
+Partage via Lien Un ique  
+Chaque sondage créé génère un lien URL unique. Ce lien peut être facilement partagé avec 
+les participants via e -mail, réseaux sociaux ou toute autre plateforme. Cette méthode de 
+diffusion simplifie l’accès aux sondages et maximise la portée de la coll ecte de données.  
+Exportation des Résultats (CSV)  
+Les créateurs de sondages peuvent exporter les données brutes des réponses au format 
+CSV. Cette fonctionnalité est essentielle pour permettre une analyse approfondie des 
+données à l’aide d’outils externes (t ableurs, logiciels d’analyse statistique). L’exportation 
+inclut toutes les réponses, associées aux questions et, si applicable, aux informations du 
+participant.  
+Tableau de Bord et Statistiques  
+Un tableau de bord personnalisé est disponible pour les créateu rs, offrant un aperçu rapide 
+de l’état de leurs sondages (actifs, terminés, nombre de participants). Pour chaque sondage, 
+des statistiques agrégées sont présentées, telles que le nombre total de réponses, le taux de 
+complétion, et la répartition des répons es pour chaque question.  
+Visualisation Graphique avec Chart.js  
+L’intégration de Chart.js permet une visualisation graphique interactive des résultats des 
+sondages. Des diagrammes à barres, circulaires et linéaires sont utilisés pour représenter 
+
+--- PAGE 30 ---
+les distrib utions de réponses, les tendances et les proportions. Cette présentation visuelle 
+facilite l’interprétation rapide des données et la détection des insights clés.  
+Notifications  
+Un système de notification informe les créateurs des événements importants, tels  que de 
+nouvelles participations à leurs sondages ou l’approche de la date de fin d’un sondage. Ces 
+notifications aident les créateurs à rester informés et à gérer leurs sondages de manière 
+proactive.  
+Protection par Mot de Passe  
+Pour les sondages nécessita nt une confidentialité accrue, une option de protection par mot 
+de passe a été implémentée. Seuls les participants disposant du mot de passe correct 
+peuvent accéder au sondage, ajoutant une couche de sécurité supplémentaire.  
+Limitation par IP  
+Pour prévenir  les réponses multiples et garantir l’intégrité des données, une fonctionnalité 
+de limitation par adresse IP a été mise en place. Elle permet de restreindre le nombre de 
+participations à un sondage depuis une même adresse IP sur une période donnée, 
+réduisa nt ainsi le risque de manipulation des résultats.  
+ 
+7. Difficultés rencontrées et solutions  
+Le développement d’une application web complexe comme SondagePro s’accompagne 
+inévitablement de défis techniques. Cette section détaille les principales difficultés  
+rencontrées et les solutions mises en œuvre pour les surmonter.  
+Compatibilité MySQL  
+Difficulté :  Lors de l’intégration de MySQL avec Django, des problèmes de compatibilité ont 
+été rencontrés, notamment avec certaines versions de pilotes ou des configurati ons 
+spécifiques de la base de données qui ne s’alignaient pas parfaitement avec l’ORM de 
+Django. Des erreurs liées aux types de champs ou aux encodages de caractères sont 
+apparues.  
+Solution :  La solution a impliqué une vérification minutieuse des versions de mysqlclient  
+(le connecteur Python pour MySQL) et de MySQL Server. Il a été nécessaire de s’assurer 
+que les versions étaient compatibles et de configurer correctement l’encodage utf8mb4  
+dans MySQL pour supporter une gamme complète de caractères. L’utilis ation de l’ORM de 
+Django a ensuite été ajustée pour s’assurer que les types de champs définis dans les 
+modèles correspondaient aux types de données MySQL appropriés.  
+Communication Frontend/Backend (AJAX/Fetch API)  
+Difficulté :  La mise en place d’une commun ication asynchrone fluide entre le frontend 
+(JavaScript) et le backend (Django) pour des fonctionnalités dynamiques (comme les 
+
+--- PAGE 31 ---
+questions conditionnelles ou la mise à jour des graphiques) a posé des défis. La gestion des 
+requêtes AJAX, des réponses JSON et des erreurs côté serveur a nécessité une attention 
+particulière.  
+Solution :  L’utilisation de l’API Fetch de JavaScript a été privilégiée pour les requêtes 
+asynchrones, en combinaison avec le Django REST Framework (pour les endpoints API) ou 
+des vues Django  renvoyant des réponses JSON. Une gestion robuste des erreurs côté client 
+et serveur a été implémentée, avec des messages d’erreur clairs et des mécanismes de 
+fallback. La sérialisation et la désérialisation des données JSON ont été gérées avec 
+json.dumps  et json.loads  en Python, et JSON.parse  et JSON.stringify  en JavaScript.  
+Gestion des relations ORM (One -to-Many, Many -to-Many)  
+Difficulté :  La modélisation de relations complexes entre les entités (par exemple, un 
+sondage a plusieurs questions, une question a plusieurs choix, un participant a plusieurs 
+réponses) et leur manipulation via l’ORM de Django a parfois été délicate. Des erreurs 
+cour antes incluaient des problèmes de requêtes N+1 ou une mauvaise utilisation des 
+related_name . 
+Solution :  Une conception rigoureuse des modèles Django a été effectuée, en définissant 
+clairement les clés étrangères ( ForeignKey ) et les relations Many -to-Many 
+(ManyToManyField ). L’utilisation de select_related  et prefetch_related  dans les 
+requêtes de l’ORM a permis d’optimiser les performances en réduisant le nombre de 
+requêtes à la base de données. Des tests unitaires ont été écrits pour valider le bon 
+fonctionn ement des relations et des requêtes.  
+Validation des formulaires dynamiques  
+Difficulté :  La validation des formulaires, en particulier ceux générés dynamiquement 
+(comme les formulaires de création de sondages avec des questions et choix multiples via 
+des fo rmsets), a présenté des complexités. Assurer que toutes les données soumises étaient 
+valides et cohérentes avant l’enregistrement en base de données a été un point critique.  
+Solution :  Django Forms et les inlineformset_factory  ont été utilisés pour gérer l a 
+validation côté serveur. Des méthodes de validation personnalisées ont été ajoutées aux 
+formulaires et aux modèles pour des règles de validation spécifiques (par exemple, 
+s’assurer que la date de fin est postérieure à la date de début). Côté client, des validations 
+JavaScript ont été implémentées pour fournir un feedback immédiat à l’utilisateur et 
+améliorer l’expérience.  
+Sécurité (CSRF, XSS, Injection SQL)  
+Difficulté :  La protection de l’application contre les vulnérabilités de sécurité courantes 
+telles que les attaques CSRF, XSS et les injections SQL a été une préoccupation constante.  
+Solution :  Django offre des mécanismes de sécurité intégrés qui ont été pleinement 
+exploités. La protection CSRF est activée par défaut et le tag {% csrf_token %}  a été 
+systématiquement utilisé dans tous les formulaires. Django ORM protège automatiquement 
+contre les injections SQL en échappant les entrées. Pour les attaques XSS, les templates de 
+
+--- PAGE 32 ---
+Django échappent automatiquement le contenu par défaut, et des mesures 
+supplémen taires ont été prises pour désinfecter les entrées utilisateur lorsque nécessaire.  
+Gestion des permissions et accès  
+Difficulté :  Définir et appliquer des permissions granulaires pour les différents types 
+d’utilisateurs (administrateurs, créateurs, particip ants) et pour l’accès aux ressources 
+(sondages, questions, réponses) a été un défi pour assurer que chaque utilisateur n’accède 
+qu’aux données et fonctionnalités autorisées.  
+Solution :  Le système d’authentification et d’autorisation de Django a été étendu.  Des 
+groupes d’utilisateurs et des permissions personnalisées ont été créés. Des décorateurs 
+(@login_required , @permission_required ) et des mixins ( LoginRequiredMixin , 
+PermissionRequiredMixin ) ont été utilisés dans les vues pour restreindre l’accès. Des 
+requêtes de base de données ont été construites pour filtrer les objets en fonction des 
+permissions de l’utilisateur connecté.  
+ 
+8. Tests et validation  
+La phase de tests et de validation est essentielle pour garantir la qualité, la fiabilité et la 
+conformité  de l’application SondagePro aux spécifications définies. Une approche 
+méthodique a été adoptée, combinant différents types de tests pour couvrir l’ensemble des 
+fonctionnalités et des exigences non fonctionnelles.  
+Tests fonctionnels  
+Les tests fonctionnels ont été menés pour vérifier que chaque fonctionnalité de 
+l’application se comporte comme attendu, conformément au cahier des charges. Cela inclut 
+: 
+• Tests de création et gestion de sondages :  Vérification de la création de sondages 
+avec différents types de questions, l’ajout de questions conditionnelles, la 
+modification et la suppression de sondages.  
+• Tests de diffusion :  S’assurer que les liens de partage sont générés correctement et 
+que les sondages sont accessibles via ces liens.  
+• Tests de participation :  Validation du processus de réponse aux sondages, y 
+compris la soumission de réponses pour différents types de questions, la gestion des 
+sondages anonymes et protégés par mot de passe.  
+• Tests d’analyse et d’exportation :  Vérification de l’affichage correct des 
+statistiques et des graphiques, ainsi que de l’exportation des données au format CSV.  
+• Tests d’authentification et d’autorisation :  S’assurer que les utilisateurs peuvent 
+s’inscrire, se connecter, se déconnecter et que les permissions sont correctement 
+appliquées (par exemple, seuls les créateurs peuvent créer des sondages).  
+Des scénarios de test ont été élaborés pour chaque fonctionnalité, couvrant les cas 
+nominaux et les cas limites. Des outils de test automatisés de Django (Django’s TestCase  et 
+
+--- PAGE 33 ---
+Client ) ont été utilisés pour simuler les interactions utilisateur et vérifier les réponses du 
+système.  
+Validation des formulaires  
+La validation des formulaires est cruciale pour maintenir l’intégrité des données. Des tests 
+spécifiques ont été effectués pour :  
+• Validation côté client :  Vérification que les règles de validation JavaScript 
+empêchent la soumission de données invalides avant l’envoi au serveur (par 
+exemple, champs obligatoires, formats d’e -mail).  
+• Validation côté serveur :  S’assurer que les validations  définies dans les forms.py  
+et models.py  de Django fonctionnent correctement, rejetant les données incorrectes 
+et affichant des messages d’erreur appropriés.  
+• Tests de sécurité des formulaires :  Vérification de la présence et de l’efficacité du 
+token CSRF p our toutes les soumissions de formulaires POST.  
+Tests utilisateurs (User Acceptance Testing - UAT)  
+Bien que le projet soit universitaire, une phase de tests utilisateurs simplifiée a été 
+envisagée pour évaluer l’expérience utilisateur et l’ergonomie de l’application. Des 
+utilisateurs représentatifs ont été invités à interagir avec l’application pour identifier les 
+éventuels problèmes d’utilisabilité, les bugs non détectés et les améliorations potentielles. 
+Leurs retours ont été précieux pour affiner l’in terface et le flux utilisateur.  
+Captures des résultats  
+Plusieurs captures d’écran ont été réalisées tout au long du développement pour 
+documenter l’interface utilisateur et les différentes fonctionnalités de l’application. Ces 
+captures sont insérées dans l e rapport pour illustrer les points clés et fournir une 
+représentation visuelle du système.  
+                                                          
+
+
+--- PAGE 34 ---
+                                                         
+ 
+ 
+
+
+--- PAGE 35 ---
+9. Perspectives d’amélioration  
+Le projet SondagePro, bien que fonctionnel et robuste, offre de nombreuses pistes 
+d’amélioration et d’extension pour l’avenir. Ces perspectives visent à enrichir l’expérience 
+utilisateur, à augmenter les capacités d’analyse et à étendre la portée de l’application.  
+Notifications temps réel  
+Actuellement, les notifications sont basées sur un système de polling ou de déclenchement 
+différé. L’intégration de technologies de notifications en temps réel, telles que WebSockets 
+(par exemple, avec Django Channels), permettrait aux créateurs de sondages de recevoir 
+instantanément des alertes concernant de nouvelles participations ou des commentaires, 
+améliorant ainsi la réactivité de la plateforme.  
+API mobile  
+Le développement d’une API RESTful dédiée, en utilisant Django REST Fra mework, 
+ouvrirait la voie à la création d’applications mobiles natives (iOS et Android) pour 
+SondagePro. Cela permettrait aux utilisateurs de créer, gérer et participer à des sondages 
+directement depuis leurs appareils mobiles, offrant une flexibilité accr ue et une meilleure 
+accessibilité.  
+IA pour analyse des réponses  
+L’intégration de capacités d’intelligence artificielle et de traitement du langage naturel 
+(NLP) pourrait révolutionner l’analyse des réponses textuelles. Par exemple, l’IA pourrait 
+être utili sée pour :  
+• Analyse de sentiment :  Évaluer le sentiment général exprimé dans les réponses 
+ouvertes.  
+• Extraction de mots -clés :  Identifier les thèmes récurrents et les concepts 
+importants.  
+• Regroupement de réponses :  Catégoriser automatiquement les réponses 
+similaires pour faciliter l’analyse qualitative.  
+Système de recommandation  
+Un système de recommandation pourrait suggérer aux créateurs de sondages des types de 
+questions, des structures de sondages ou des modèles basés sur leurs préférences passées 
+ou sur l a popularité de certains formats. Cela accélérerait le processus de création et 
+améliorerait la qualité des sondages.  
+Multilingue  
+L’internationalisation (i18n) et la localisation (l10n) de l’application permettraient à 
+SondagePro de supporter plusieurs lan gues. Cela rendrait la plateforme accessible à un 
+public mondial et faciliterait la création de sondages dans différentes langues.  
+
+--- PAGE 36 ---
+Hébergement cloud  
+Actuellement, le projet est développé dans un environnement local. Une perspective 
+majeure serait le déploi ement de l’application sur une plateforme cloud (comme AWS, 
+Google Cloud, Azure ou Heroku). Cela garantirait une haute disponibilité, une scalabilité 
+automatique et une meilleure performance pour un nombre croissant d’utilisateurs et de 
+sondages.  
+ 
+10. Con clusion générale  
+Le projet SondagePro – Application Web de Sondages Dynamiques  a été une entreprise 
+ambitieuse et enrichissante, aboutissant à la création d’une plateforme web fonctionnelle 
+et robuste pour la gestion de sondages en ligne. En s’appuyant sur  le framework Django et 
+un ensemble de technologies modernes, nous avons réussi à concevoir une solution qui 
+répond aux besoins complexes de collecte, d’analyse et de visualisation de données, tout en 
+offrant une expérience utilisateur intuitive et sécuris ée. 
+Ce rapport a détaillé l’ensemble du processus, depuis l’analyse des besoins et la conception 
+architecturale basée sur l’architecture MVT de Django, jusqu’au développement des 
+fonctionnalités clés telles que la création de sondages dynamiques, les quest ions 
+conditionnelles, la gestion des utilisateurs, l’exportation des résultats et la visualisation 
+graphique avec Chart.js. Les défis techniques rencontrés, notamment en matière de 
+compatibilité MySQL, de communication asynchrone et de gestion des relation s ORM, ont 
+été surmontés grâce à une approche méthodique et à l’exploitation des meilleures 
+pratiques de développement.  
+SondagePro démontre la puissance et la flexibilité de Django pour le développement rapide 
+d’applications web complexes. Il constitue une  base solide pour de futures évolutions, avec 
+des perspectives prometteuses telles que l’intégration de notifications en temps réel, le 
+développement d’une API mobile, l’application de l’intelligence artificielle pour l’analyse 
+des réponses, et le déploiem ent sur des infrastructures cloud. Ce projet a non seulement 
+permis de mettre en pratique des connaissances techniques approfondies, mais a 
+également souligné l’importance d’une planification rigoureuse, d’une conception soignée 
+et d’une résolution créativ e des problèmes dans le cycle de vie du développement logiciel.  
+En somme, SondagePro est plus qu’une simple application de sondage ; c’est une preuve de 
+concept d’une solution complète et évolutive, prête à s’adapter aux exigences futures du 
+monde numériqu e. 
+ 
+11. Webographie  
+Cette section liste les principales ressources et documentations techniques qui ont été 
+consultées et utilisées tout au long du développement du projet SondagePro.  
+
+--- PAGE 37 ---
+• Documentation officielle de Django :  La ressource primordiale pour comp rendre 
+le framework, son architecture MVT, l’ORM, le système d’authentification et les 
+meilleures pratiques de développement. https://docs.djangoproject.com/  
+• Documentation de Bootstrap :  Guide complet pour  l’utilisation du framework CSS, 
+essentiel pour le responsive design et la mise en page de l’interface utilisateur. 
+https://getbootstrap.com/docs/5.3/  
+• Documentation de Chart.js :  Référence pour l’intégration et la personnalisation 
+des graphiques interactifs pour la visualisation des résultats de sondages. 
+https://www.chartjs.org/docs/latest/  
+• Documentation MySQL :  Informations  sur la configuration de la base de données, 
+les types de données et l’optimisation des requêtes. https://dev.mysql.com/doc/  
+• Stack Overflow :  Une plateforme communautaire indispensable pour la résolution 
+de pro blèmes techniques spécifiques et l’obtention de solutions à des défis de 
+programmation. https://stackoverflow.com/  
+• OpenAI Documentation :  Consultée pour des idées sur l’intégration future de l’IA 
+et du NLP pour  l’analyse des réponses. https://platform.openai.com/docs/  
+• MDN Web Docs :  Une ressource complète pour les technologies web côté client 
+(HTML, CSS, JavaScript, Fetch API), essentielle pour le développemen t frontend. 
+https://developer.mozilla.org/fr/docs/Web  
+ 
+11. Annexes  
+Les annexes regroupent des éléments complémentaires qui, bien que non intégrés 
+directement dans le corps principal du rapport, fournissent des informations détaillées et 
+un support technique additionnel.  
+Extraits de code  
+Cette section contiendrait des extraits de code significatifs illustrant des implémentations 
+clés, des fonctions utilitaires complexes ou des configurations impor tantes. Par exemple :  
+• Modèle Question  avec gestion des questions conditionnelles.  
+• Vue create_survey  avec formsets . 
+• Code JavaScript pour l’intégration de Chart.js.  
+Captures d’écran  
+Des captures d’écran supplémentaires de l’application en fonctionnement, mon trant 
+différentes interfaces utilisateur, formulaires, tableaux de bord et visualisations de 
+résultats.  
+
+--- PAGE 38 ---
+ 
+ 
+
+
+--- PAGE 39 ---
+ 
+ 
+
+
+--- PAGE 40 ---
+ 
+ 
+
+
+--- PAGE 41 ---
+ 
+ 
+
+
+--- PAGE 42 ---
+ 
+ 
+Structure du projet  
+Une arborescence détaillée du projet Django, incluant tous les fichiers et dossiers, pour 
+donner une vue d’ensemble de l’organisation du code.  
+Commandes d’installation et de démarrage  
+Liste des commandes nécessaires pour configurer l’environnement de développement, 
+installer les dépendances, migrer la base de données et démarrer l’application Django.  
+# Cloner  le dépôt (exemple)  
+git clone https://github.com/votre_utilisateur/SondagePro.git  
+cd SondagePro  
+ 
+# Créer et activer un environnement virtuel  
+python3 -m venv venv  
+source venv/bin/activate  
+ 
+# Installer les dépendances Python  
+pip install -r requirements.txt  
+ 
+# Configurer la base de données (settings.py)  
+# ...  
+ 
+# Appliquer les migrations de la base de données  
+python manage.py makemigrations  
+python manage.py migrate  
+ 
+# Créer un superutilisateur  
+python manage.py createsuperuser  
+
+
+--- PAGE 43 ---
+ 
+# Démarrer le serveur de développe ment  
+python manage.py runserver  
+ 
+

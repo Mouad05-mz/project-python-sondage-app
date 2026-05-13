@@ -36,4 +36,7 @@ urlpatterns = [
     # ── Data Export ────────────────────────────────────────
     path('poll/<int:poll_id>/export/csv/', views.export_responses_csv, name='export_responses'),
 
+    # ── Notifications ──────────────────────────────────────
+    path('notifications/mark-read/', views.mark_notifications_read, name='mark_notifications_read'),
+
 ]

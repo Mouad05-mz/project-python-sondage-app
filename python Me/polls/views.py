@@ -16,7 +16,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponse
 from django.utils import timezone
 
-from .models import Poll, Question, Choice, Response, Answer
+from .models import Poll, Question, Choice, Response, Answer, Notification
 from .forms import (
     UserRegistrationForm,
     PollPasswordForm,
@@ -334,8 +334,30 @@ def _save_poll_answers(request, poll, ip_address):
                 choices = Choice.objects.filter(id__in=choice_ids, question=question)
                 ans.choices.add(*choices)
 
+    # Create notification for creator
+    if poll.creator:
+        Notification.objects.create(
+            user=poll.creator,
+            message=f"Nouvelle participation à votre sondage « {poll.title} »."
+        )
+
     messages.success(request, "Merci pour votre participation ! Vos réponses ont bien été enregistrées.")
     return redirect('home')
+
+# ═══════════════════════════════════════════════════════
+# NOTIFICATION VIEWS
+# ═══════════════════════════════════════════════════════
+
+@login_required
+def mark_notifications_read(request):
+    """
+    Marks all notifications for the user as read.
+    """
+    if request.method == 'POST':
+        request.user.notifications.filter(is_read=False).update(is_read=True)
+        return JsonResponse({'status': 'success'})
+    return JsonResponse({'status': 'error'}, status=400)
+
 
 
 # ═══════════════════════════════════════════════════════
