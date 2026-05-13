@@ -38,6 +38,7 @@ Application web de sondages dynamiques developpee avec Django. Le projet permet 
 project-python-sondage-app/
 |-- docs/
 |   |-- diagrams/
+|   |-- cahier_des_charges_projet17.pdf
 |   |-- rapport_sondagepro_django.pdf
 |   `-- rapport_sondagepro_django.docx
 |-- python Me/
@@ -55,8 +56,8 @@ project-python-sondage-app/
 | --- | --- |
 | Rapport du projet | [docs/rapport_sondagepro_django.pdf](docs/rapport_sondagepro_django.pdf) |
 | Version Word du rapport | [docs/rapport_sondagepro_django.docx](docs/rapport_sondagepro_django.docx) |
-| Presentation | Fichier `presentation.pdf` non present dans le depot |
-| Cahier des charges | Fichier `cdc.pdf` non present dans le depot |
+| Cahier des charges | [docs/cahier_des_charges_projet17.pdf](docs/cahier_des_charges_projet17.pdf) |
+| Presentation PowerPoint | En cours de preparation, emplacement prevu : `docs/presentation.pptx` |
 
 ## Diagrammes
 
