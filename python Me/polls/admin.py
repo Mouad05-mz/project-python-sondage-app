@@ -47,11 +47,11 @@ class PollAdmin(admin.ModelAdmin):
         'title', 'creator', 'is_active', 'is_anonymous',
         'is_template', 'response_count', 'created_at', 'expires_at'
     ]
-    list_filter = ['is_active', 'is_anonymous', 'is_template', 'created_at']
+    list_filter = ['is_active', 'is_anonymous', 'is_template']
     search_fields = ['title', 'description', 'creator__username']
     readonly_fields = ['created_at', 'updated_at']
-    date_hierarchy = 'created_at'
-    inlines = [QuestionInline]
+    date_hierarchy = None
+    # inlines = [QuestionInline]  # Temporarily commented out to check if this causes the error
 
     fieldsets = (
         ('Informations générales', {
@@ -86,7 +86,7 @@ class QuestionAdmin(admin.ModelAdmin):
     list_display = ['text', 'poll', 'question_type', 'is_required', 'order']
     list_filter = ['question_type', 'is_required']
     search_fields = ['text', 'poll__title']
-    inlines = [ChoiceInline]
+    # inlines = [ChoiceInline]  # Temporarily commented out
     ordering = ['poll', 'order']
 
 
@@ -102,11 +102,11 @@ class ChoiceAdmin(admin.ModelAdmin):
 class ResponseAdmin(admin.ModelAdmin):
     """Admin interface for the Response model."""
     list_display = ['id', 'poll', 'user', 'ip_address', 'created_at']
-    list_filter = ['poll', 'created_at']
+    list_filter = ['poll']
     search_fields = ['poll__title', 'user__username', 'ip_address']
     readonly_fields = ['poll', 'user', 'ip_address', 'created_at']
-    date_hierarchy = 'created_at'
-    inlines = [AnswerInline]
+    date_hierarchy = None
+    # inlines = [AnswerInline]  # Temporarily commented out to check if this causes the error
 
 
 @admin.register(Answer)
@@ -114,4 +114,4 @@ class AnswerAdmin(admin.ModelAdmin):
     """Admin interface for the Answer model."""
     list_display = ['id', 'question', 'text_answer', 'response']
     search_fields = ['question__text', 'text_answer']
-    filter_horizontal = ['choices']
+    # filter_horizontal = ['choices']  # Temporarily commented out
